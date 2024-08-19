@@ -118,15 +118,20 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BLL\BasicBLL.cs" />
+    <Compile Include="BLL\LoginBLL.cs" />
     <Compile Include="Controllers\BasicController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SysController.cs" />
+    <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\SQL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="Helper\SQLHelper.cs" />
     <Compile Include="Models\BasicModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\QueryReturnModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
