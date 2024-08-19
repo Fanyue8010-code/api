@@ -10,6 +10,11 @@ namespace zym_api.DAL
     public class LoginDAL
     {
         public static StringBuilder strBuilder;
+        /// <summary>
+        /// 获取user信息
+        /// </summary>
+        /// <param name="OpenId"></param>
+        /// <returns></returns>
         public static string GetUserInfo(string OpenId)
         {
             StringBuilder strBuilder = new StringBuilder();
