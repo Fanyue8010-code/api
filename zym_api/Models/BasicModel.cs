@@ -18,7 +18,9 @@ namespace zym_api.Models
 
     public class GoodBasic
     {
+        public string Action { get; set; }
         public Guid ID { get; set; } = Guid.NewGuid();
+        public string GoodID { get; set; }
         public string CategoryID { get; set; }
         public string Name { get; set; }
         public string Unit { get; set; }

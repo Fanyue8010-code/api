@@ -75,6 +75,23 @@ namespace zym_api.DAL
             return strBuilder.ToString();
         }
 
+        public static string ChgGoodBasic(GoodBasic entity)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE GoodBasic ");
+            strBuilder.Append("SET [CategoryID] = '"+entity.CategoryID+"' ");
+            strBuilder.Append(",[GoodName] = '"+entity.Name+"' ");
+            strBuilder.Append(",[PackUnit] = '"+entity.Unit+"' ");
+            strBuilder.Append(",[PackBarcode] = '"+entity.Barcode+"' ");
+            strBuilder.Append(",[IsHasSubPack] = '"+entity.HasSubPack+"' ");
+            strBuilder.Append(",[SubPackUnit] ='"+entity.SubPackUnit+"' ");
+            strBuilder.Append(",[SubPackBarcode] = '"+entity.SubPackBarcode+"' ");
+            strBuilder.Append(",[SubPackQty] = '"+entity.SubPackQty+"' ");
+            strBuilder.Append(",[Picture] = '"+entity.Picture+"' ");
+            strBuilder.Append("WHERE ID = '"+entity.GoodID+"' ");
+            return strBuilder.ToString();
+        }
+
         public static string GetGoodByName(string name)
         {
             strBuilder = new StringBuilder();
@@ -88,7 +105,7 @@ namespace zym_api.DAL
         {
             strBuilder = new StringBuilder();
             strBuilder.Append("SELECT ");
-            strBuilder.Append("C.Category, B.ID, B.GoodName, B.PackUnit, B.PackBarcode, B.IsHasSubPack, B.SubPackUnit, B.SubPackBarcode, B.SubPackQty, B.Picture ");
+            strBuilder.Append("C.Category, C.ID AS CATEID, B.ID, B.GoodName, B.PackUnit, B.PackBarcode, B.IsHasSubPack, B.SubPackUnit, B.SubPackBarcode, B.SubPackQty, B.Picture ");
             strBuilder.Append("FROM GoodBasic B ");
             strBuilder.Append("LEFT JOIN GOODCATEGORY C ");
             strBuilder.Append("ON B.CATEGORYID = C.ID ");
@@ -99,7 +116,7 @@ namespace zym_api.DAL
             }
             if (!string.IsNullOrEmpty(goodName))
             {
-                strBuilder.Append("AND B.GOODNAME = '"+goodName+"' ");
+                strBuilder.Append("AND B.GOODNAME LIKE N'%"+goodName+"%' ");
             }
             if (!string.IsNullOrEmpty(barcode))
             {

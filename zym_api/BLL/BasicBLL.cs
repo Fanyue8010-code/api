@@ -46,7 +46,15 @@ namespace zym_api.BLL
 
         public static int SaveGoodBasic(GoodBasic entity)
         {
-            int i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
+            int i = 0;
+            if (entity.Action == "A")
+            {
+                i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
+            }
+            else
+            {
+                i = SQLHelper.ExecuteNonQuery(SQL.ChgGoodBasic(entity));
+            }
             return i;
         }
 
