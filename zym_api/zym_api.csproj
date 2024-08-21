@@ -124,8 +124,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ControllerFeedback.cs" />
     <Compile Include="Helper\SQLHelper.cs" />
     <Compile Include="Models\BasicModel.cs" />
+    <Compile Include="Models\Req.cs" />
+    <Compile Include="OptionsMethodModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

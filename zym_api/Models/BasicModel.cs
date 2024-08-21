@@ -28,7 +28,23 @@ namespace zym_api.Models
         public string SubPackBarcode { get; set; }
         public string SubPackQty { get; set; }
         public string Picture { get; set; }
+    }
 
+    public class MenuItems
+    {
+        public List<MenuList> menuList { get; set; } = new List<MenuList>();
+    }
+
+    public class MenuList
+    {
+        public string action { get; set; }
+        public string title { get; set; }
+        public List<Item> items { get; set; } = new List<Item>();
+    }
+    public class Item
+    {
+        public string title { get; set; }
+        public string link { get; set; }
 
     }
 }
