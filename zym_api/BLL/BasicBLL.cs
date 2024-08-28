@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Security.Policy;
+using System.Text;
 using System.Web;
+using System.Web.SessionState;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using zym_api.DAL;
@@ -44,18 +47,25 @@ namespace zym_api.BLL
             return i;
         }
 
-        public static int SaveGoodBasic(GoodBasic entity)
+        public static string SaveGoodBasic(GoodBasic entity)
         {
+            if(!string.IsNullOrEmpty(entity.Picture))
+            {
+                entity.Picture = "查看";
+            }
             int i = 0;
+            string strID = "";
             if (entity.Action == "A")
             {
                 i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
+                strID = entity.ID.ToString();
             }
             else
             {
                 i = SQLHelper.ExecuteNonQuery(SQL.ChgGoodBasic(entity));
+                strID = entity.GoodID.ToString();
             }
-            return i;
+            return strID;
         }
 
         public static DataTable GetGoodByName(string name)
@@ -76,6 +86,23 @@ namespace zym_api.BLL
             {
                 throw new Exception("商品不存在");
             }
+            string strIP = ConfigurationManager.AppSettings["IP"].ToString();
+            DataTable dtPath = SQLHelper.ExecuteDataTable(SQL.GetPath("GoodBasicPage"));
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string strPicture = dt.Rows[i]["Picture"].ToString();
+                string strPath = "";
+                if (string.IsNullOrEmpty(strPicture))
+                {
+                    strPath = "";
+                }
+                else
+                {
+                    string strGoodID = dt.Rows[i]["ID"].ToString();
+                    strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/" + strGoodID + ".jpg";
+                }
+                dt.Rows[i]["Picture"] = strPath;
+            }
             return dt;
         }
         public static int DelGood(string id)
@@ -84,40 +111,150 @@ namespace zym_api.BLL
             return i;
         }
 
-        public static DataTable GetGoodByBarcode(string barcode)
+        public static DataTable GetGoodByBarcode(string shelf, string barcode)
         {
             DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetGoodByBarcode(barcode));
             if(dt.Rows.Count == 0)
             {
                 throw new Exception("商品不存在");
             }
+            string strGoodID = dt.Rows[0]["ID"].ToString();
+            string strPack = dt.Rows[0]["PACK"].ToString();
+            string strUnit = dt.Rows[0]["PackUnit"].ToString();
+            string strPackBarcode = dt.Rows[0]["packbarcode"].ToString();
+            string strIsHasSub = dt.Rows[0]["ISHASSUBPACK"].ToString();
+            string strSubQty = dt.Rows[0]["subpackqty"].ToString();
+            string strSubUnit = dt.Rows[0]["subpackunit"].ToString();
+            string strSubBarcode = dt.Rows[0]["subpackbarcode"].ToString();
+            if (strPack == "OUT" && strIsHasSub == "Y" && strSubQty != "0" && !string.IsNullOrEmpty(strSubUnit))
+            {
+                if (!string.IsNullOrEmpty(strSubBarcode) && strPackBarcode != strSubBarcode)
+                {
+                    for (int i = 0; i < Convert.ToInt32(strSubQty); i++)
+                    {
+                        SaveShelf(shelf, strGoodID, strSubUnit, true);
+                    }
+                }
+                else
+                {
+                    throw new Exception("当前扫描的是整袋还是小包?");
+                }
+            }
+            else if(strPack == "IN")
+            {
+                SaveShelf(shelf, strGoodID, strSubUnit, true);
+            }
+            else if(strPack == "OUT" && strIsHasSub == "N")
+            {
+                SaveShelf(shelf, strGoodID, strUnit, true);
+            }
             return dt;
         }
-        public static int SaveShelf(string shelf, string goodID, string unit)
+        public static int SaveShelf(string shelf, string barcode, string unit, bool isApi = false)
         {
-            int i = SQLHelper.ExecuteNonQuery(SQL.SaveShelf(shelf, goodID, unit));
+            int i = 0;
+            if (isApi)
+            {
+                SQLHelper.ExecuteNonQuery(SQL.SaveShelf(shelf, barcode, unit));
+                return i;
+            }
+            //找GoodID
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetGoodByBarcode(barcode));
+            string strID = dt.Rows[0]["ID"].ToString();
+            string strSubQty = dt.Rows[0]["subpackqty"].ToString();
+            if(unit == "小包")
+            {
+                i = SQLHelper.ExecuteNonQuery(SQL.SaveShelf(shelf, dt.Rows[0]["ID"].ToString(), "小包"));
+            }
+            else
+            {
+                for(int j = 0; j < Convert.ToInt32(strSubQty); j++)
+                {
+                    i += SQLHelper.ExecuteNonQuery(SQL.SaveShelf(shelf, dt.Rows[0]["ID"].ToString(), "小包"));
+                }
+            }
+            return i;
+        }
+
+        public static int OffShelfOutPack(string pack, string shelf, string barcode)
+        {
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetBasicOutByBarcode(barcode));
+            if (dt.Rows.Count == 0)
+            {
+                throw new Exception("未找到对应商品");
+            }
+            string strID = dt.Rows[0]["ID"].ToString();
+            string strUnit = dt.Rows[0]["Unit"].ToString();
+            int iSubQty = Convert.ToInt32(dt.Rows[0]["SubPackQty"]);
+            DataTable dtID = SQLHelper.ExecuteDataTable(SQL.GetShelfByBarcode(shelf, strID));
+            if (dtID.Rows.Count == 0)
+            {
+                throw new Exception("此货架未找到对应商品");
+            }
+            int i = 0;
+            if (pack == "整袋")
+            {
+                if (dtID.Rows.Count < iSubQty)
+                {
+                    throw new Exception("此货架商品不足1" + strUnit);
+                }
+                for (int j = 0; j < iSubQty; j++)
+                {
+                    string strShelfID = dtID.Rows[j]["ID"].ToString();
+                    i += SQLHelper.ExecuteNonQuery(SQL.OffShelfByID(strShelfID));
+                }
+            }
+            else if(pack == "小包")
+            {
+                string strShelfID = dtID.Rows[0]["ID"].ToString();
+                i += SQLHelper.ExecuteNonQuery(SQL.OffShelfByID(strShelfID));
+            }
             return i;
         }
 
         public static int OffShelf(string shelf, string barcode)
         {
+            string strWhere = "OUT";
             DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetBasicOutByBarcode(barcode));
             if(dt.Rows.Count == 0)
             {
+                strWhere = "IN";
                 dt = SQLHelper.ExecuteDataTable(SQL.GetBasicInByBarcode(barcode));
             }
             if(dt.Rows.Count == 0)
             {
-                throw new Exception("此货架未找到对应商品");
+                throw new Exception("未找到对应商品");
             }
             string strID = dt.Rows[0]["ID"].ToString();
             string strUnit = dt.Rows[0]["Unit"].ToString();
-            DataTable dtID = SQLHelper.ExecuteDataTable(SQL.GetShelfByBarcode(shelf, strID, strUnit));
-            if(dtID.Rows.Count == 0)
+            int iSubQty = Convert.ToInt32(dt.Rows[0]["SubPackQty"]);
+            int i = 0;
+            if(strWhere == "OUT" && strUnit == "整袋")
             {
-                throw new Exception("此货架未找到对应商品");
+                throw new Exception("当前扫描的是整袋还是小包?");
             }
-            int i = SQLHelper.ExecuteNonQuery(SQL.OffShelfByID(dtID.Rows[0]["ID"].ToString()));
+            if (iSubQty == 0 || strWhere == "IN")
+            {
+                DataTable dtID = SQLHelper.ExecuteDataTable(SQL.GetShelfByBarcode(shelf, strID, strUnit));
+                if (dtID.Rows.Count == 0)
+                {
+                    throw new Exception("此货架未找到对应商品");
+                }
+                i = SQLHelper.ExecuteNonQuery(SQL.OffShelfByID(dtID.Rows[0]["ID"].ToString()));
+            }
+            else
+            {
+                DataTable dtID = SQLHelper.ExecuteDataTable(SQL.GetShelfByBarcode(shelf, strID));
+                if(dtID.Rows.Count < iSubQty)
+                {
+                    throw new Exception("此货架商品不足1" + strUnit);
+                }
+                for(int j = 0; j < iSubQty; j++)
+                {
+                    string strShelfID = dtID.Rows[j]["ID"].ToString();
+                    i += SQLHelper.ExecuteNonQuery(SQL.OffShelfByID(strShelfID));
+                }
+            }
             return i;
         }
 
@@ -128,17 +265,98 @@ namespace zym_api.BLL
             {
                 throw new Exception("数据不存在");
             }
-            return dt;
+
+            DataTable dtShelf = new DataTable();
+            dtShelf.Columns.Add("GoodID");
+            dtShelf.Columns.Add("GoodName");
+            dtShelf.Columns.Add("qty");
+            dtShelf.Columns.Add("GoodUnit");
+            dtShelf.Columns.Add("Shelf");
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string strGoodID = dt.Rows[i]["GoodID"].ToString();
+                string strGood = dt.Rows[i]["GoodName"].ToString();
+                int iCurrentQty = Convert.ToInt32(dt.Rows[i]["qty"]);
+                int iSubQty = Convert.ToInt32(dt.Rows[i]["subpackqty"]);
+                int iOut = 0;
+                if(iCurrentQty >= iSubQty)
+                {
+                    if(iSubQty == 0)
+                    {
+                        dtShelf.Rows.Add(strGoodID, strGood, iCurrentQty, dt.Rows[i]["GoodUnit"].ToString(), dt.Rows[i]["Shelf"].ToString());
+                        continue;
+                    }
+                    iOut = Convert.ToInt32(Convert.ToDouble(iCurrentQty / iSubQty));
+                    if(iOut > 0)
+                    {
+                        DataRow dr = dtShelf.NewRow();
+                        dr["GoodName"] = strGood;
+                        dr["GoodName"] = strGood;
+                        dr["qty"] = iOut.ToString();
+                        dr["GoodUnit"] = dt.Rows[i]["packunit"].ToString();
+                        dr["Shelf"] = dt.Rows[i]["Shelf"].ToString();
+                        dtShelf.Rows.Add(dr);
+
+                        if(iSubQty * iOut != iCurrentQty)
+                        {
+                            dtShelf.Rows.Add(strGoodID, strGood, iCurrentQty - (iSubQty * iOut), dt.Rows[i]["GoodUnit"].ToString(), dt.Rows[i]["Shelf"].ToString());
+                        }
+                    }
+                }
+            }
+            return dtShelf;
         }
 
-        public static DataTable ReqGood(string query)
+        public static DataTable ReqGood(string reqID, string query)
         {
             DataTable dt = SQLHelper.ExecuteDataTable(SQL.ReqGood(query));
             if (dt.Rows.Count == 0)
             {
                 throw new Exception("商品不存在");
             }
-            return dt;
+            DataTable dtShelf = new DataTable();
+            dtShelf.Columns.Add("GoodID");
+            dtShelf.Columns.Add("GoodName");
+            dtShelf.Columns.Add("Qty");
+            dtShelf.Columns.Add("GoodUnit");
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string strGoodID = dt.Rows[i]["GoodID"].ToString();
+                string strGood = dt.Rows[i]["GoodName"].ToString();
+                int iCurrentQty = Convert.ToInt32(dt.Rows[i]["qty"]);
+                int iSubQty = Convert.ToInt32(dt.Rows[i]["subpackqty"]);
+                int iOut = 0;
+                if (iCurrentQty >= iSubQty)
+                {
+                    if (iSubQty == 0)
+                    {
+                        dtShelf.Rows.Add(strGoodID, strGood, iCurrentQty, dt.Rows[i]["GoodUnit"].ToString());
+                        continue;
+                    }
+                    iOut = Convert.ToInt32(Convert.ToDouble(iCurrentQty / iSubQty));
+                    if (iOut > 0)
+                    {
+                        DataRow dr = dtShelf.NewRow();
+                        dr["GoodID"] = strGoodID;
+                        dr["GoodName"] = strGood;
+                        dr["Qty"] = iOut.ToString();
+                        dr["GoodUnit"] = dt.Rows[i]["packunit"].ToString();
+                        dtShelf.Rows.Add(dr);
+
+                        if (iSubQty * iOut != iCurrentQty)
+                        {
+                            dtShelf.Rows.Add(strGoodID, strGood, iCurrentQty - (iSubQty * iOut), dt.Rows[i]["GoodUnit"].ToString());
+                        }
+                    }
+                }
+            }
+            for(int i = 0; i < dtShelf.Rows.Count; i++)
+            {
+                SQLHelper.ExecuteNonQuery(SQL.SaveReqTmp(reqID, dtShelf.Rows[i]["GOODID"].ToString(), dtShelf.Rows[i]["Qty"].ToString(), dtShelf.Rows[i]["GoodUnit"].ToString()));
+            }
+            return dtShelf;
         }
 
         public static string GetSeq()
@@ -254,6 +472,32 @@ namespace zym_api.BLL
             return dt;
         }
 
+        public static DataTable GetGoodByID(string id, string unit, string qty)
+        {
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetGoodByID(id));
+            if(dt.Rows.Count == 0)
+            {
+                throw new Exception("商品不存在");
+            }
+            string strPackUnit = dt.Rows[0]["PackUnit"].ToString();
+            string strSubPackUnit = dt.Rows[0]["SubPackUnit"].ToString();
+            string strHasSub = dt.Rows[0]["IsHasSubPack"].ToString();
+            string strSubQty = dt.Rows[0]["SubPackQty"].ToString();
+            if(unit == strPackUnit && strHasSub == "Y")
+            {
+                return SQLHelper.ExecuteDataTable(SQL.GetShelfByQty(strSubPackUnit, id, Convert.ToInt32(strSubQty) * Convert.ToInt32(qty)));
+            }
+            else if(unit == strPackUnit && strHasSub == "N")
+            {
+                return SQLHelper.ExecuteDataTable(SQL.GetShelf(strPackUnit, id));
+            }
+            else if(unit == strSubPackUnit)
+            {
+                return SQLHelper.ExecuteDataTable(SQL.GetShelf(strSubPackUnit, id));
+            }
+            return new DataTable();
+        }
+
         public static bool IsShelfExist(string shelf)
         {
             DataTable dt = SQLHelper.ExecuteDataTable(SQL.IsShelfExist(shelf));
@@ -269,6 +513,8 @@ namespace zym_api.BLL
             string strUnit = "";
             string strPack = "";
             string strID = "";
+            string strPackBar = "";
+            string strSubPackBar = "";
             DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetOutPack(barcode));
             
             if(dt.Rows.Count == 0)
@@ -283,6 +529,9 @@ namespace zym_api.BLL
             strID = dt.Rows[0]["ID"].ToString();
             strUnit = dt.Rows[0]["UNIT"].ToString();
             strPack = dt.Rows[0]["PACK"].ToString();
+            strPackBar = dt.Rows[0]["PackBarcode"].ToString();
+            strSubPackBar = dt.Rows[0]["SubPackBarcode"].ToString();
+
 
             //扫描商品是否在货架中
             DataTable dtOnShelf = SQLHelper.ExecuteDataTable(SQL.GetOnShelf(strID, strUnit, shelf));
@@ -321,5 +570,74 @@ namespace zym_api.BLL
 
             return true;
         }
+
+        public static string OpenPic(string id)
+        {
+            string strIP = ConfigurationManager.AppSettings["IP"].ToString();
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetPath("GoodBasicPage"));
+            string strPath = "https://" + strIP + "/Attach/" + dt.Rows[0][0].ToString() + "/" + id + ".jpg";
+            return strPath;
+        }
+
+        public static int SaveShopGood(string goodID, string quantity, string unit, string spec, string exp, string expUnit, string save, string price, string qy)
+        {
+            DataTable dt = GetShopGoodByID(goodID);
+            if(dt.Rows.Count > 0)
+            {
+                throw new Exception("商品已经存在, 请在当前页面查询后进行修改.");
+            }
+            int i = SQLHelper.ExecuteNonQuery(SQL.SaveShopGood(goodID, quantity, unit, spec, exp, expUnit, save, price, qy));
+            return i;
+        }
+
+        public static DataTable GetGoods()
+        {
+            return SQLHelper.ExecuteDataTable(SQL.GetGoods());
+        }
+        public static DataTable GetQY()
+        {
+            return SQLHelper.ExecuteDataTable(SQL.GetQY());
+        }
+
+        public static int SaveQY(string ID, string value)
+        {
+            return SQLHelper.ExecuteNonQuery(SQL.SaveQY(ID, value));
+        }
+
+        public static DataTable GetShopGoodByID(string id)
+        {
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetShopGoodByID(id));
+            string strIP = ConfigurationManager.AppSettings["IP"].ToString();
+            DataTable dtPath = SQLHelper.ExecuteDataTable(SQL.GetPath("GoodBasicPage"));
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string strPicture = dt.Rows[i]["Picture"].ToString();
+                string strPath = "";
+                if (string.IsNullOrEmpty(strPicture))
+                {
+                    strPath = "";
+                }
+                else
+                {
+                    string strGoodID = dt.Rows[i]["GoodID"].ToString();
+                    strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/" + strGoodID + ".jpg";
+                }
+                dt.Rows[i]["Picture"] = strPath;
+            }
+            return dt;
+        }
+
+        public static int UpdShopGoodByID(string id, string qty, string unit, string spec, string exp, string expUnit, string save, string price, string qy)
+        {
+            int i = SQLHelper.ExecuteNonQuery(SQL.UpdShopGoodByID(id, qty, unit, spec, exp, expUnit, save, price, qy));
+            return i;
+        }
+
+        public static int ChgFlag(string id, string flag)
+        {
+            int i = SQLHelper.ExecuteNonQuery(SQL.ChgFlag(id, flag));
+            return i;
+        }
+
     }
 }

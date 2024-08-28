@@ -60,7 +60,8 @@ namespace zym_api.Controllers
             string HasSubPack,
             string SubPackUnit,
             string Unit,
-            string Barcode
+            string Barcode,
+            string Picture
             )
         {
             GoodBasic entity = new GoodBasic();
@@ -69,6 +70,7 @@ namespace zym_api.Controllers
             {
                 entity.GoodID = ID;
             }
+            entity.ID = Guid.NewGuid();
             entity.CategoryID = CategoryID;
             entity.Name = Name;
             entity.SubPackQty =SubPackQty;
@@ -77,6 +79,7 @@ namespace zym_api.Controllers
             entity.SubPackUnit = SubPackUnit;
             entity.Unit = Unit;
             entity.Barcode = Barcode;
+            entity.Picture = Picture;
             string strJson = "";
             try
             {
@@ -113,12 +116,12 @@ namespace zym_api.Controllers
             return msg;
         }
 
-        public HttpResponseMessage GetGoodByBarcode(string barcode)
+        public HttpResponseMessage GetGoodByBarcode(string shelf, string barcode)
         {
             string strJson = "";
             try
             {
-                DataTable dt = BasicBLL.GetGoodByBarcode(barcode);
+                DataTable dt = BasicBLL.GetGoodByBarcode(shelf, barcode);
                 strJson = JsonConvert.SerializeObject(dt);
             }
             catch (Exception ex)
@@ -129,12 +132,12 @@ namespace zym_api.Controllers
         }
 
         [HttpGet]
-        public HttpResponseMessage SaveShelf(string shelf, string goodID, string unit)
+        public HttpResponseMessage SaveShelf(string shelf, string barcode, string unit)
         {
             string strJson = "";
             try
             {
-                strJson = JsonConvert.SerializeObject(BasicBLL.SaveShelf(shelf, goodID, unit));
+                strJson = JsonConvert.SerializeObject(BasicBLL.SaveShelf(shelf, barcode, unit));
             }
             catch(Exception ex)
             {
@@ -150,6 +153,22 @@ namespace zym_api.Controllers
             try
             {
                 strJson = JsonConvert.SerializeObject(BasicBLL.OffShelf(shelf, barcode));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+
+        [HttpGet]
+        public HttpResponseMessage OffShelfOutPack(string pack, string shelf, string barcode)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.OffShelfOutPack(pack, shelf, barcode));
             }
             catch (Exception ex)
             {
@@ -174,12 +193,12 @@ namespace zym_api.Controllers
         }
 
         [HttpGet]
-        public HttpResponseMessage ReqGood(string query)
+        public HttpResponseMessage ReqGood(string reqID, string query)
         {
             string strJson = "";
             try
             {
-                strJson = JsonConvert.SerializeObject(BasicBLL.ReqGood(query));
+                strJson = JsonConvert.SerializeObject(BasicBLL.ReqGood(reqID, query));
             }
             catch (Exception ex)
             {
@@ -345,6 +364,190 @@ namespace zym_api.Controllers
             try
             {
                 strJson = JsonConvert.SerializeObject(BasicBLL.CheckScanGood(reqNo, barcode, shelf));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage OpenPic(string id)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.OpenPic(id));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage UploadFTP()
+        {
+            string strJson = "";
+            try
+            {
+                string post = HttpContext.Current.Request.HttpMethod;
+                string type = HttpContext.Current.Request.ContentType;
+                string strFtpPath = HttpContext.Current.Request.Form["url"];
+                string strFtpGuid = HttpContext.Current.Request.Form["guid"];
+                var file = HttpContext.Current.Request.Files[0];
+                bool isCheckFtp = FTPHelper.CheckFtp();
+                string strDelete = HttpContext.Current.Request.Form["del"];
+                string[] arrPath = strFtpPath.Split('/');
+                if (arrPath.Length > 0)
+                {
+                    string strPart = string.Empty;
+                    foreach (string strPath in arrPath)
+                    {
+                        strPart += strPath + "/";
+                        if (strPath.Split('-').Length == 5)
+                        {
+                            string[] list = FTPHelper.GetFileList(FTPHelper.strFtpPath + strPart);
+                            if (strDelete == "true" && list.Length > 0)
+                            {
+                                FTPHelper.Delete(FTPHelper.strFtpPath + strPart + list[0]);
+                            }
+                        }
+                        if (!FTPHelper.DirectoryExists(FTPHelper.strFtpPath + strPart))
+                        {
+                            FTPHelper.MakeDirectory(FTPHelper.strFtpPath + strPart);
+                        }
+                    }
+                }
+
+                if (isCheckFtp)
+                {
+                    FTPHelper.Upload(file, strFtpPath, strFtpGuid);
+                }
+                strJson = JsonConvert.SerializeObject("");
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+
+        [HttpGet]
+        public HttpResponseMessage GetGoodByID(string unit, string goodID, string qty)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.GetGoodByID(goodID, unit, qty));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage SaveShopGood(string goodID, string quantity, string unit, string spec, string exp, string expUnit, string save, string price, string qy)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.SaveShopGood(goodID, quantity, unit, spec, exp, expUnit, save, price, qy));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetGoods()
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.GetGoods());
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetQY()
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.GetQY());
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage SaveQY(string id, string value)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.SaveQY(id, value));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetShopGoodByID(string id)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.GetShopGoodByID(id));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage UpdShopGoodByID(string id, string qty, string unit, string spec, string exp, string expUnit, string save, string price, string qy)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.UpdShopGoodByID(id, qty, unit, spec, exp, expUnit, save, price, qy));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ChgFlag(string id, string flag)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.ChgFlag(id, flag));
             }
             catch (Exception ex)
             {
