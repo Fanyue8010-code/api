@@ -4,11 +4,19 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project>
   <PropertyGroup>
+<<<<<<< HEAD
     <_PublishTargetUrl>D:\Program\zym_api\zym_api\zym_api\bin\app.publish\</_PublishTargetUrl>
     <History>True|2024-09-11T13:31:43.8560253Z||;True|2024-09-10T21:26:27.6561782+08:00||;</History>
+=======
+    <_PublishTargetUrl>D:\发布\api</_PublishTargetUrl>
+    <History>True|2024-09-07T02:31:35.2084560Z||;True|2024-09-07T09:24:09.6846787+08:00||;True|2024-08-31T07:43:28.4155650+08:00||;True|2024-08-27T19:48:54.0270096+08:00||;True|2024-08-25T18:52:59.3956677+08:00||;True|2024-08-25T18:04:33.8627101+08:00||;True|2024-08-25T17:29:51.4973747+08:00||;True|2024-08-25T17:24:40.0622824+08:00||;True|2024-08-25T16:47:41.2897054+08:00||;True|2024-08-20T22:18:30.2233910+08:00||;True|2024-08-19T20:58:19.0140564+08:00||;True|2024-08-18T11:26:06.1510287+08:00||;True|2024-08-15T22:40:54.4779232+08:00||;True|2024-08-15T22:38:12.1668109+08:00||;True|2024-08-15T22:34:08.4703290+08:00||;True|2024-08-15T22:28:10.8529728+08:00||;True|2024-08-15T22:12:42.6982112+08:00||;</History>
+>>>>>>> master
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
+    <File Include="bin/Conn.dll">
+      <publishTime>08/31/2024 18:16:04</publishTime>
+    </File>
     <File Include="bin/JWT.dll">
       <publishTime>08/15/2024 22:52:37</publishTime>
     </File>
@@ -214,10 +222,17 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/15/2024 22:52:37</publishTime>
     </File>
     <File Include="bin/zym_api.dll">
+<<<<<<< HEAD
       <publishTime>09/11/2024 21:31:43</publishTime>
     </File>
     <File Include="bin/zym_api.pdb">
       <publishTime>09/11/2024 21:31:43</publishTime>
+=======
+      <publishTime>09/07/2024 10:31:34</publishTime>
+    </File>
+    <File Include="bin/zym_api.pdb">
+      <publishTime>09/07/2024 10:31:34</publishTime>
+>>>>>>> master
     </File>
     <File Include="Content/Site.css">
       <publishTime>08/15/2024 22:52:38</publishTime>
@@ -226,7 +241,11 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/15/2024 22:52:38</publishTime>
     </File>
     <File Include="Web.config">
+<<<<<<< HEAD
       <publishTime>09/11/2024 21:31:43</publishTime>
+=======
+      <publishTime>08/28/2024 22:21:44</publishTime>
+>>>>>>> master
     </File>
   </ItemGroup>
 </Project>

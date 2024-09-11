@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Conn, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Conn.dll</HintPath>
+    </Reference>
     <Reference Include="JWT, Version=10.0.0.0, Culture=neutral, PublicKeyToken=6f98bca0f40f2ecf, processorArchitecture=MSIL">
       <HintPath>..\packages\JWT.10.1.1\lib\net462\JWT.dll</HintPath>
     </Reference>
@@ -133,8 +137,15 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+<<<<<<< HEAD
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\JsonHelper.cs" />
+=======
+    <Compile Include="Helper\ControllerFeedback.cs" />
+    <Compile Include="Helper\FTPHelper.cs" />
+    <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\Log.cs" />
+>>>>>>> master
     <Compile Include="Helper\SQLHelper.cs" />
     <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\BasicModel.cs" />
