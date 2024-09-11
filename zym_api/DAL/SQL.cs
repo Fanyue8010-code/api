@@ -254,6 +254,13 @@ namespace zym_api.DAL
             return strBuilder.ToString();
         }
 
+        public static string IsTmp(string reqNo)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT COUNT(*) FROM GoodRequestTmp WHERE ID = '"+reqNo+"'");
+            return strBuilder.ToString();
+        }
+
         public static string ReqGood(string query)
         {
             strBuilder = new StringBuilder();
@@ -289,6 +296,7 @@ namespace zym_api.DAL
         public static string SaveReq(string id, string goodID, string unit, string qty, string user)
         {
             strBuilder = new StringBuilder();
+            strBuilder.Append("DELETE FROM GoodRequest WHERE ID = '"+id+"' AND GOODID = '"+goodID+"';");
             strBuilder.Append("INSERT INTO GoodRequest ");
             strBuilder.Append("(ID, GOODID, QUANTITY, GOODUNIT, REQUESTUSER) ");
             strBuilder.Append("VALUES ");
@@ -356,7 +364,7 @@ namespace zym_api.DAL
         public static string GetMenu()
         {
             strBuilder  = new StringBuilder();
-            strBuilder.Append("SELECT * FROM PAGELIST ORDER BY PAGEGROUP, PAGENAME");
+            strBuilder.Append("SELECT * FROM PAGELIST ORDER BY ID");
             return strBuilder.ToString();
         }
 
@@ -427,7 +435,7 @@ namespace zym_api.DAL
         public static string GetOutPack(string barcode)
         {
             strBuilder = new StringBuilder();
-            strBuilder.Append("SELECT ID, PackUnit AS UNIT, subpackunit, 'OUT' AS PACK, PackBarcode, SubPackBarcode FROM GoodBasic ");
+            strBuilder.Append("SELECT ID, PackUnit AS UNIT, subpackunit, 'OUT' AS PACK, PackBarcode, SubPackBarcode, SubPackQty FROM GoodBasic ");
             strBuilder.Append("WHERE FLAG = 'T' ");
             strBuilder.Append("AND PackBarcode = '"+ barcode + "' ");
             return strBuilder.ToString();
@@ -436,7 +444,7 @@ namespace zym_api.DAL
         public static string GetInPack(string barcode)
         {
             strBuilder = new StringBuilder();
-            strBuilder.Append("SELECTID, PackUnit AS UNIT, subpackunit, 'IN' AS PACK, PackBarcode, SubPackBarcode FROM GoodBasic ");
+            strBuilder.Append("SELECT ID, PackUnit AS UNIT, subpackunit, 'IN' AS PACK, PackBarcode, SubPackBarcode, SubPackQty FROM GoodBasic ");
             strBuilder.Append("WHERE FLAG = 'T' ");
             strBuilder.Append("AND SubPackBarcode = '" + barcode + "' ");
             return strBuilder.ToString();
@@ -449,18 +457,23 @@ namespace zym_api.DAL
             strBuilder.Append("WHERE GoodStatus = 'T' ");
             strBuilder.Append("AND SHELF = '"+shelf+"' ");
             strBuilder.Append("and goodid = '"+ goodID + "' ");
-            strBuilder.Append("and GoodUnit = N'"+unit+"' ");
+            if (!string.IsNullOrEmpty(unit))
+            {
+                strBuilder.Append("and GoodUnit = N'" + unit + "' ");
+            }
             return strBuilder.ToString();
         }
 
         public static string GetReqByID(string goodID, string unit, string reqNo)
         {
             strBuilder = new StringBuilder();
-            strBuilder.Append("SELECT QUANTITY FROM GoodRequest ");
-            strBuilder.Append("WHERE RequestStatus = 'T' ");
-            strBuilder.Append("AND ID = '"+reqNo+"' ");
+            strBuilder.Append("SELECT QUANTITY, RequestStatus FROM GoodRequest ");
+            strBuilder.Append("WHERE ID = '"+reqNo+"' ");
             strBuilder.Append("AND GOODID = '"+goodID+"' ");
-            strBuilder.Append("AND GoodUnit = N'"+unit+"' ");
+            if (!string.IsNullOrEmpty(unit))
+            {
+                strBuilder.Append("AND GoodUnit = N'" + unit + "' ");
+            }
             return strBuilder.ToString();
         }
 
@@ -500,7 +513,11 @@ namespace zym_api.DAL
         public static string ChgPreStatus (string reqNo, string goodID, string unit)
         {
             strBuilder = new StringBuilder();
-            strBuilder.Append("update GoodRequest set RequestStatus = 'F' where id = '"+ reqNo + "' and goodid = '"+ goodID + "' and GoodUnit = '"+ unit + "' ");
+            strBuilder.Append("update GoodRequest set RequestStatus = 'F' where id = '"+ reqNo + "' and goodid = '"+ goodID + "' ");
+            if (!string.IsNullOrEmpty(unit))
+            {
+                strBuilder.Append(" and GoodUnit = '"+ unit + "' ");
+            }
             return strBuilder.ToString();
         }
 
@@ -585,6 +602,49 @@ namespace zym_api.DAL
         {
             strBuilder = new StringBuilder();
             strBuilder.Append("UPDATE SHOPGOOD SET FLAG = '"+ flag + "' WHERE ID = '"+id+"'");
+            return strBuilder.ToString();
+        }
+
+        public static string GetReqGood(string good)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("select s.GoodID, b.GoodName, sum(s.goodqty) as Qty, s.GoodUnit, '' AS NeedQty ");
+            strBuilder.Append("from GoodShelf s  ");
+            strBuilder.Append("LEFT JOIN GoodBasic B  ");
+            strBuilder.Append("ON S.GoodID = B.ID  ");
+            strBuilder.Append("WHERE S.GoodStatus = 'T'  ");
+            strBuilder.Append("AND B.FLAG = 'T'   ");
+            if (!string.IsNullOrEmpty(good))
+            {
+                strBuilder.Append("AND (B.GoodName LIKE '%"+ good + "%' OR PackBarcode = '"+ good + "' OR SubPackBarcode = '"+ good + "') ");
+            }
+            strBuilder.Append("group by s.GoodID,b.GoodName,  s.GoodUnit ");
+            strBuilder.Append("ORDER BY GoodName, GoodUnit ");
+            return strBuilder.ToString();
+        }
+
+        public static string OffShelf(int qty, string shelf, string id)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE GOODSHELF SET GoodStatus = 'F' WHERE ID IN  ");
+            strBuilder.Append("(  ");
+            strBuilder.Append("SELECT TOP "+ qty + " ID FROM GOODSHELF WHERE GoodStatus = 'T' AND SHELF = '"+ shelf + "' AND GOODID = '"+ id + "' ");
+            strBuilder.Append(")  ");
+            return strBuilder.ToString();
+        }
+
+        public static string GetSysUser(string id, string psd)
+        {
+            strBuilder  = new StringBuilder();
+            strBuilder.Append("SELECT USERID, USERROLE, USERNAME, PSD FROM SYSUSER ");
+            strBuilder.Append("WHERE USERNAME = '"+id+"'");
+            return strBuilder.ToString();
+        }
+
+        public static string ChgPsd(string id, string psd)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE SYSUSER SET PSD = '"+psd+"' WHERE USERNAME = '"+id+"'");
             return strBuilder.ToString();
         }
     }
