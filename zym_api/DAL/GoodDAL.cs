@@ -339,7 +339,15 @@ namespace zym_api.DAL
             strBuilder.Append("  ,[Picture]");
             strBuilder.Append("  ,[Price]");
             strBuilder.Append("  ,[GoodQty]");
-            strBuilder.Append("  ,[CreateTime]");
+            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待发货")
+            {
+                strBuilder.Append("  ,[CreateTime]");
+                strBuilder.Append("  ,[PayTime]");
+            }
+            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
+            {
+                strBuilder.Append("  ,[CreateTime]");
+            }
             strBuilder.Append("  ,[Name]");
             strBuilder.Append("  ,[Phone]");
             strBuilder.Append("  ,[Region]");
@@ -357,17 +365,25 @@ namespace zym_api.DAL
             strBuilder.Append(",'" + ubi.GoodBasicID + "'");
             strBuilder.Append(",'" + ubi.CategoryID + "'");
             strBuilder.Append(" ,'" + ubi.ShopGoodID + "'");
-            strBuilder.Append("  ,'" + ubi.Category + "'");
-            strBuilder.Append("  ,'" + ubi.GoodName + "'");
+            strBuilder.Append("  ,N'" + ubi.Category + "'");
+            strBuilder.Append("  ,N'" + ubi.GoodName + "'");
             strBuilder.Append(",'" + ubi.Picture + "'");
             strBuilder.Append(",'" + ubi.Price + "'");
             strBuilder.Append(",'" + ubi.GoodQty + "'");
-            strBuilder.Append(",GETDATE()");
-            strBuilder.Append(",'" + ubi.Name + "'");
+            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待发货")
+            {
+                strBuilder.Append(",GETDATE()");
+                strBuilder.Append(",GETDATE()");
+            }
+            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
+            {
+                strBuilder.Append(",GETDATE()");
+            }
+            strBuilder.Append(",N'" + ubi.Name + "'");
             strBuilder.Append(",'" + ubi.Phone + "'");
-            strBuilder.Append(",'" + ubi.Region + "'");
-            strBuilder.Append(",'" + ubi.Address + "'");
-            strBuilder.Append(",'" + ubi.Status + "'");
+            strBuilder.Append(",N'" + ubi.Region + "'");
+            strBuilder.Append(",N'" + ubi.Address + "'");
+            strBuilder.Append(",N'" + ubi.Status + "'");
             strBuilder.Append(" )");
             return strBuilder.ToString();
         }
@@ -390,6 +406,7 @@ namespace zym_api.DAL
             strBuilder.Append(" ,CONVERT(varchar, a.[PayTime], 120) AS [PayTime]");
             strBuilder.Append(" ,CONVERT(varchar, a.[ShipDate], 120) AS [ShipDate]");
             strBuilder.Append("  ,CONVERT(varchar, a.[CompletionTime], 120) AS [CompletionTime]");
+            strBuilder.Append("  ,CONVERT(varchar, [CancelTime], 120) AS [CancelTime]");
             strBuilder.Append(" ,a.[Name]");
             strBuilder.Append(" ,a.[Phone]");
             strBuilder.Append(" ,a.[Region]");
@@ -403,7 +420,7 @@ namespace zym_api.DAL
             strBuilder.Append("  ,SUM(CAST([GoodQty] AS int)) AS TotalCount  ");
             strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' GROUP BY OpenID,[OrderNumber]) b ON");
             strBuilder.Append("  a.OpenID=b.OpenID AND a.OrderNumber=b.OrderNumber");
-            strBuilder.Append(" WHERE a.OpenID='" + OpenId + "' ");
+            strBuilder.Append(" WHERE a.OpenID='" + OpenId + "'  ");
             if (!string.IsNullOrEmpty(ID))
             {
                 strBuilder.Append(" AND a.[OrderNumber]='" + ID + "'");
@@ -424,6 +441,19 @@ namespace zym_api.DAL
             {
                 strBuilder.Append(" AND a.[Status]=N'已完成'");
             }
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "5")
+            {
+                strBuilder.Append(" AND (a.[Status]=N'已取消' OR a.[Status]=N'已退款')");
+            }
+            strBuilder.Append(" AND  a.[CreateTime] >= DATEADD(YEAR, -1, GETDATE()) ");
+            return strBuilder.ToString();
+        }
+        public static string CancelOrder(string OpenId, string OrderNumber)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE [dbo].[Order] SET ");
+            strBuilder.Append(" [CancelTime] = GETDATE(),[Status] =N'已取消' ");
+            strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
             return strBuilder.ToString();
         }
     }

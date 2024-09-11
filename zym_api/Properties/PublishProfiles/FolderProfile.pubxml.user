@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>D:\Program\zym_api\zym_api\zym_api\bin\app.publish\</_PublishTargetUrl>
-    <History>True|2024-09-10T13:26:27.6561782Z||;</History>
+    <History>True|2024-09-11T13:31:43.8560253Z||;True|2024-09-10T21:26:27.6561782+08:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -214,10 +214,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/15/2024 22:52:37</publishTime>
     </File>
     <File Include="bin/zym_api.dll">
-      <publishTime>09/10/2024 21:26:26</publishTime>
+      <publishTime>09/11/2024 21:31:43</publishTime>
     </File>
     <File Include="bin/zym_api.pdb">
-      <publishTime>09/10/2024 21:26:26</publishTime>
+      <publishTime>09/11/2024 21:31:43</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>08/15/2024 22:52:38</publishTime>
@@ -226,7 +226,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/15/2024 22:52:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/10/2024 21:26:27</publishTime>
+      <publishTime>09/11/2024 21:31:43</publishTime>
     </File>
   </ItemGroup>
 </Project>

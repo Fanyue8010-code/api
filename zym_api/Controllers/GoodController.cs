@@ -284,16 +284,18 @@ namespace zym_api.Controllers
                 string Phone = jsonParams.Phone;
                 string Region = jsonParams.Region;
                 string Address = jsonParams.Address;
+                string OrderNumber = jsonParams.OrderNumber;
+                string Status = jsonParams.Status;
                 string errMsg = "";
                 string result = "";
                 if (jsonParams.Type == "CartData")
                 { 
                 List<GoodsPayList> goodsPays = JsonConvert.DeserializeObject<List<GoodsPayList>>(Data); 
-                    result = GoodBLL.InsertPayOrder(goodsPays, OpenId, Name, Phone, Region, Address, out errMsg);
+                    result = GoodBLL.InsertPayOrder(goodsPays, OpenId, Name, Phone, Region, Address, out errMsg,OrderNumber, Status);
                 } else
                 {
                   List<GoodsPay> goodsPays = JsonConvert.DeserializeObject<List<GoodsPay>>(Data); 
-                     result = GoodBLL.InsertPayOrder(goodsPays, OpenId, Name, Phone, Region, Address, out errMsg);
+                     result = GoodBLL.InsertPayOrder(goodsPays, OpenId, Name, Phone, Region, Address, out errMsg,OrderNumber, Status);
                 }
                 if (errMsg != "OK")
                 {
@@ -323,6 +325,24 @@ namespace zym_api.Controllers
             {
                 return DoErrorReturn(ex.Message);
             }
-        } 
+        }
+        [HttpGet]
+        public IHttpActionResult CancelOrder(string OpenId, string OrderNumber)
+        {
+            try
+            {
+                string errMsg = "";
+                string result = GoodBLL.CancelOrder(OpenId, OrderNumber, out errMsg);
+                if (errMsg != "OK")
+                {
+                    throw new Exception(errMsg);
+                }
+                return DoOKReturn(result);
+            }
+            catch (Exception ex)
+            {
+                return DoErrorReturn(ex.Message);
+            }
+        }
     }
 }

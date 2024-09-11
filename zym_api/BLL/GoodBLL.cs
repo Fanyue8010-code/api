@@ -350,7 +350,7 @@ namespace zym_api.BLL
             }
         }
 
-        public static string InsertPayOrder(List<GoodsPayList> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg)
+        public static string InsertPayOrder(List<GoodsPayList> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg,string OrderNumber, string Status)
         {
             errMsg = "OK";
             //List<GoodsPay> list = new List<GoodsPay>();
@@ -377,7 +377,7 @@ namespace zym_api.BLL
                         ub.OpenId = OpenId;
                         ub.CartID = Orders.CartID;
                         ub.GoodCheck = Orders.GoodCheck;
-                        ub.OrderNumber = "123456789";
+                        ub.OrderNumber = OrderNumber;
                         ub.GoodBasicID = Orders.GoodBasicID;
                         ub.CategoryID = ubi.CategoryID;
                         ub.ShopGoodID = Orders.ShopGoodID;
@@ -385,13 +385,17 @@ namespace zym_api.BLL
                         ub.GoodName = Orders.GoodName;
                         ub.Picture = Orders.Picture;
                         ub.Price = Orders.Price;
-                        ub.GoodQty = Orders.GoodQty;
+                        ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty ;
                         ub.Name = Name;
                         ub.Phone = Phone;
                         ub.Region = Region;
                         ub.Address = Address;
-                        ub.Status = "SUCCESS";
+                         ub.Status = Status;
                         int insert = SQLHelper.ExecuteNonQuery(GoodDAL.InsertOrder(ub));
+                        if (ub.Status == "待发货")
+                        {
+                            int Del = SQLHelper.ExecuteNonQuery(GoodDAL.DeleteCart(OpenId, ub.CartID));
+                        }
                     }
                     // ubi.CreateTime =item.CartID;
                     //ubi.PayTime= item.CartID;
@@ -411,7 +415,7 @@ namespace zym_api.BLL
 
             }
         }
-        public static string InsertPayOrder(List<GoodsPay> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg)
+        public static string InsertPayOrder(List<GoodsPay> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg,string OrderNumber, string Status)
         {
             errMsg = "OK";
             //List<GoodsPay> list = new List<GoodsPay>();
@@ -424,7 +428,7 @@ namespace zym_api.BLL
                     ub.OpenId = OpenId;
                     ub.CartID = Orders.CartID;
                     ub.GoodCheck = Orders.GoodCheck;
-                    ub.OrderNumber = "123456789";
+                    ub.OrderNumber = OrderNumber;
                     ub.GoodBasicID = Orders.GoodBasicID;
                     ub.CategoryID = Orders.CategoryID;
                     ub.ShopGoodID = Orders.ShopGoodID;
@@ -432,13 +436,17 @@ namespace zym_api.BLL
                     ub.GoodName = Orders.GoodName;
                     ub.Picture = Orders.Picture;
                     ub.Price = Orders.Price;
-                    ub.GoodQty = Orders.GoodQty;
+                    ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty;
                     ub.Name = Name;
                     ub.Phone = Phone;
                     ub.Region = Region;
                     ub.Address = Address;
-                    ub.Status = "SUCCESS";
+                    ub.Status = Status;
                     int insert = SQLHelper.ExecuteNonQuery(GoodDAL.InsertOrder(ub));
+                    if (ub.Status == "待发货")
+                    {
+                        int Del = SQLHelper.ExecuteNonQuery(GoodDAL.DeleteCart(OpenId, ub.CartID));
+                    }
                 }
                 return "OK";
             }
@@ -479,6 +487,7 @@ namespace zym_api.BLL
                                      PayTime = grp.First().Field<string>("PayTime"),
                                      ShipDate = grp.First().Field<string>("ShipDate"),
                                      CompletionTime =  grp.First().Field<string>("CompletionTime"),
+                                     CancelTime = grp.First().Field<string>("CancelTime"),
                                      Goods = from g in grp
                                              group g by new
                                              {
@@ -505,7 +514,8 @@ namespace zym_api.BLL
                                                      CreateTime = r.Field<string>("CreateTime"),
                                                      PayTime =r.Field<string>("PayTime"),
                                                      ShipDate = r.Field<string>("ShipDate"),
-                                                     CompletionTime =  r.Field<string>("CompletionTime")
+                                                     CompletionTime =  r.Field<string>("CompletionTime"),
+                                                     CancelTime = r.Field<string>("CancelTime")
                                                  }).ToList()
                                              }
                                  };
@@ -557,6 +567,19 @@ namespace zym_api.BLL
 
             }
         }
-
+        public static string CancelOrder(string OpenId, string OrderNumber, out string errMsg)
+        {
+            errMsg = "OK";
+            try
+            {
+                int dt = SQLHelper.ExecuteNonQuery(GoodDAL.CancelOrder(OpenId, OrderNumber));
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return errMsg;
+            }
+        }
     }
 }
