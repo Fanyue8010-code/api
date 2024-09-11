@@ -373,6 +373,21 @@ namespace zym_api.Controllers
         }
 
         [HttpGet]
+        public HttpResponseMessage CheckReqScan(string reqNo, string barcode, string shelf)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.CheckReqScan(reqNo, barcode, shelf));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
         public HttpResponseMessage OpenPic(string id)
         {
             string strJson = "";
@@ -548,6 +563,47 @@ namespace zym_api.Controllers
             try
             {
                 strJson = JsonConvert.SerializeObject(BasicBLL.ChgFlag(id, flag));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage CheckPsd(string id, string psd)
+        {
+            string strJson = "";
+            try
+            {
+                string strPsd = Helper.Helper.Base64(psd);
+
+                //从数据库取密码
+                DataTable dt = BasicBLL.GetSysUser(id, psd);
+                if(dt.Rows.Count > 0)
+                {
+                    if(strPsd != dt.Rows[0]["PSD"].ToString())
+                    {
+                        throw new Exception("密码输入错误");
+                    }
+                }
+                strJson = JsonConvert.SerializeObject(dt);
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ChgPsd(string id, string oldPsd, string newPsd)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.ChgPsd(id, oldPsd, newPsd));
             }
             catch (Exception ex)
             {

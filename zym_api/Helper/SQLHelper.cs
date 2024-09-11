@@ -12,13 +12,14 @@ namespace zym_api.Helper
         /// <summary>
         /// 连接字符串
         /// </summary>
-        private static string strconn = @"server=49.233.191.59,1443\ZYM;dataBase=zym_test;uid=zym;pwd=!QAZxsw23edc";
+        private static string strconn = @"server="+DBHelper.Server()+";dataBase="+DBHelper.DB()+";uid="+DBHelper.ID()+";pwd=" + DBHelper.Conn();
 
-        public SQLHelper(string conn)
-        {
-            //strconn = conn;
-            strconn = @"server=49.233.191.59,1443\ZYM;dataBase=zym_test;uid=zym;pwd=!QAZxsw23edc";
-        }
+
+        //public SQLHelper(string conn)
+        //{
+        //    //strconn = conn;
+        //    strconn = @"server=49.233.191.59,1443\ZYM;dataBase=zym_test;uid=zym;pwd=!QAZxsw23edc";
+        //}
 
         /// <summary>
         /// 执行增删改SQL语句
