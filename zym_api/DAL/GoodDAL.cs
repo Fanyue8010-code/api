@@ -406,7 +406,7 @@ namespace zym_api.DAL
             strBuilder.Append(" ,CONVERT(varchar, a.[PayTime], 120) AS [PayTime]");
             strBuilder.Append(" ,CONVERT(varchar, a.[ShipDate], 120) AS [ShipDate]");
             strBuilder.Append("  ,CONVERT(varchar, a.[CompletionTime], 120) AS [CompletionTime]");
-            strBuilder.Append("  ,CONVERT(varchar, [CancelTime], 120) AS [CancelTime]");
+            strBuilder.Append("  ,CONVERT(varchar, a.[CancelTime], 120) AS [CancelTime]");
             strBuilder.Append(" ,a.[Name]");
             strBuilder.Append(" ,a.[Phone]");
             strBuilder.Append(" ,a.[Region]");
@@ -421,31 +421,31 @@ namespace zym_api.DAL
             strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' GROUP BY OpenID,[OrderNumber]) b ON");
             strBuilder.Append("  a.OpenID=b.OpenID AND a.OrderNumber=b.OrderNumber");
             strBuilder.Append(" WHERE a.OpenID='" + OpenId + "'  ");
+            strBuilder.Append(" AND  a.[CreateTime] >= DATEADD(YEAR, -1, GETDATE()) ");
             if (!string.IsNullOrEmpty(ID))
             {
                 strBuilder.Append(" AND a.[OrderNumber]='" + ID + "'");
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "1")
             {
-                strBuilder.Append(" AND a.[Status]=N'待付款'");
+                strBuilder.Append(" AND a.[Status]=N'待付款'  ORDER BY    a.[CreateTime]  DESC");
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "2")
             {
-                strBuilder.Append(" AND a.[Status]=N'待发货'");
+                strBuilder.Append(" AND a.[Status]=N'待发货' ORDER BY    a.[PayTime]  DESC");
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "3")
             {
-                strBuilder.Append(" AND a.[Status]=N'待收货'");
+                strBuilder.Append(" AND a.[Status]=N'待收货'  ORDER BY    a.[ShipDate]  DESC");
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "4")
             {
-                strBuilder.Append(" AND a.[Status]=N'已完成'");
+                strBuilder.Append(" AND a.[Status]=N'已完成'  ORDER BY    a.[CompletionTime]  DESC");
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "5")
             {
-                strBuilder.Append(" AND (a.[Status]=N'已取消' OR a.[Status]=N'已退款')");
+                strBuilder.Append(" AND (a.[Status]=N'已取消' OR a.[Status]=N'已退款')  ORDER BY    a.[CancelTime]  DESC");
             }
-            strBuilder.Append(" AND  a.[CreateTime] >= DATEADD(YEAR, -1, GETDATE()) ");
             return strBuilder.ToString();
         }
         public static string CancelOrder(string OpenId, string OrderNumber)
@@ -453,6 +453,22 @@ namespace zym_api.DAL
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append("  UPDATE [dbo].[Order] SET ");
             strBuilder.Append(" [CancelTime] = GETDATE(),[Status] =N'已取消' ");
+            strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
+            return strBuilder.ToString();
+        }
+        public static string NoPayOrder(string OpenId, string OrderNumber)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE [dbo].[Order] SET ");
+            strBuilder.Append(" [PayTime] = GETDATE(),[Status] =N'待发货' ");
+            strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
+            return strBuilder.ToString();
+        }
+        public static string RefundOrder(string OpenId, string OrderNumber)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE [dbo].[Order] SET ");
+            strBuilder.Append(" [CancelTime] = GETDATE(),[Status] =N'已退款' ");
             strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
             return strBuilder.ToString();
         }

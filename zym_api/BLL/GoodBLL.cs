@@ -591,5 +591,33 @@ namespace zym_api.BLL
                 return errMsg;
             }
         }
+        public static string NoPayOrder(string OpenId, string OrderNumber, out string errMsg)
+        {
+            errMsg = "OK";
+            try
+            {
+                int dt = SQLHelper.ExecuteNonQuery(GoodDAL.NoPayOrder(OpenId, OrderNumber));
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return errMsg;
+            }
+        }
+        public static string RefundOrder(string OpenId, string OrderNumber, out string errMsg)
+        {
+            errMsg = "OK";
+            try
+            {
+                int dt = SQLHelper.ExecuteNonQuery(GoodDAL.RefundOrder(OpenId, OrderNumber));
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return errMsg;
+            }
+        }
     }
 }

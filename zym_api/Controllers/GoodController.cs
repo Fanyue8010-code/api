@@ -344,5 +344,41 @@ namespace zym_api.Controllers
                 return DoErrorReturn(ex.Message);
             }
         }
+        [HttpGet]
+        public IHttpActionResult NoPayOrder(string OpenId, string OrderNumber)
+        {
+            try
+            {
+                string errMsg = "";
+                string result = GoodBLL.NoPayOrder(OpenId, OrderNumber, out errMsg);
+                if (errMsg != "OK")
+                {
+                    throw new Exception(errMsg);
+                }
+                return DoOKReturn(result);
+            }
+            catch (Exception ex)
+            {
+                return DoErrorReturn(ex.Message);
+            }
+        }
+        [HttpGet]
+        public IHttpActionResult RefundOrder(string OpenId, string OrderNumber)
+        {
+            try
+            {
+                string errMsg = "";
+                string result = GoodBLL.RefundOrder(OpenId, OrderNumber, out errMsg);
+                if (errMsg != "OK")
+                {
+                    throw new Exception(errMsg);
+                }
+                return DoOKReturn(result);
+            }
+            catch (Exception ex)
+            {
+                return DoErrorReturn(ex.Message);
+            }
+        }
     }
 }
