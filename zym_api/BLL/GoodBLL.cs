@@ -384,6 +384,11 @@ namespace zym_api.BLL
                         ub.Category = ubi.Category;
                         ub.GoodName = Orders.GoodName;
                         ub.Picture = Orders.Picture;
+                        // 判断图片是否存在
+                        if (!CheckImageExists(ub.Picture))
+                        {
+                            ub.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                        }
                         ub.Price = Orders.Price;
                         ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty ;
                         ub.Name = Name;
@@ -435,6 +440,11 @@ namespace zym_api.BLL
                     ub.Category = Orders.Category;
                     ub.GoodName = Orders.GoodName;
                     ub.Picture = Orders.Picture;
+                    // 判断图片是否存在
+                    if (!CheckImageExists(ub.Picture))
+                    {
+                        ub.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                    }
                     ub.Price = Orders.Price;
                     ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty;
                     ub.Name = Name;

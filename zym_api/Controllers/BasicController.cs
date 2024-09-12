@@ -51,6 +51,8 @@ namespace zym_api.Controllers
 
         [HttpGet]
         public HttpResponseMessage SaveGoodBasic(
+            string Action,
+            string ID,
             string CategoryID,
             string Name,
             string SubPackQty,
@@ -58,10 +60,17 @@ namespace zym_api.Controllers
             string HasSubPack,
             string SubPackUnit,
             string Unit,
-            string Barcode
+            string Barcode,
+            string Picture
             )
         {
             GoodBasic entity = new GoodBasic();
+            entity.Action = Action;
+            if (!string.IsNullOrEmpty(ID))
+            {
+                entity.GoodID = ID;
+            }
+            entity.ID = Guid.NewGuid();
             entity.CategoryID = CategoryID;
             entity.Name = Name;
             entity.SubPackQty =SubPackQty;
@@ -70,6 +79,7 @@ namespace zym_api.Controllers
             entity.SubPackUnit = SubPackUnit;
             entity.Unit = Unit;
             entity.Barcode = Barcode;
+            entity.Picture = Picture;
             string strJson = "";
             try
             {
@@ -82,8 +92,6 @@ namespace zym_api.Controllers
             HttpResponseMessage msg = new HttpResponseMessage { Content = new StringContent(strJson, Encoding.GetEncoding("UTF-8"), "application/json") };
             return msg;
         }
-<<<<<<< HEAD
-=======
 
         public HttpResponseMessage GetGood(string category, string goodName, string barcode, string subBarcode)
         {
@@ -603,6 +611,5 @@ namespace zym_api.Controllers
             }
             return ControllerFeedback.OKJson(strJson);
         }
->>>>>>> master
     }
 }

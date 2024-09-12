@@ -1,9 +1,17 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
+using System.Web.UI.WebControls;
+using zym_api.BLL;
 using zym_api.Models;
 
 namespace zym_api.DAL
@@ -62,11 +70,46 @@ namespace zym_api.DAL
             strBuilder.Append("'" + entity.Unit + "',");
             strBuilder.Append("'" + entity.Barcode + "',");
             strBuilder.Append("'" + entity.HasSubPack + "',");
-            strBuilder.Append("'" + entity.SubPackUnit + "',");
-            strBuilder.Append("'" + entity.SubPackBarcode + "',");
-            strBuilder.Append("'" + entity.SubPackQty + "',");
+            if (entity.HasSubPack == "N")
+            {
+                strBuilder.Append("'',");
+                strBuilder.Append("'',");
+                strBuilder.Append("'',");
+            }
+            else
+            {
+                strBuilder.Append("'" + entity.SubPackUnit + "',");
+                strBuilder.Append("'" + entity.SubPackBarcode + "',");
+                strBuilder.Append("'" + entity.SubPackQty + "',");
+            }
             strBuilder.Append("'" + entity.Picture + "'");
             strBuilder.Append(")");
+            return strBuilder.ToString();
+        }
+
+        public static string ChgGoodBasic(GoodBasic entity)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE GoodBasic ");
+            strBuilder.Append("SET [CategoryID] = '"+entity.CategoryID+"' ");
+            strBuilder.Append(",[GoodName] = '"+entity.Name+"' ");
+            strBuilder.Append(",[PackUnit] = '"+entity.Unit+"' ");
+            strBuilder.Append(",[PackBarcode] = '"+entity.Barcode+"' ");
+            strBuilder.Append(",[IsHasSubPack] = '"+entity.HasSubPack+"' ");
+            if(entity.HasSubPack == "N")
+            {
+                strBuilder.Append(",[SubPackUnit] ='' ");
+                strBuilder.Append(",[SubPackBarcode] = '' ");
+                strBuilder.Append(",[SubPackQty] = '' ");
+            }
+            else
+            {
+                strBuilder.Append(",[SubPackUnit] ='" + entity.SubPackUnit + "' ");
+                strBuilder.Append(",[SubPackBarcode] = '" + entity.SubPackBarcode + "' ");
+                strBuilder.Append(",[SubPackQty] = '" + entity.SubPackQty + "' ");
+            }
+            strBuilder.Append(",[Picture] = '"+entity.Picture+"' ");
+            strBuilder.Append("WHERE ID = '"+entity.GoodID+"' ");
             return strBuilder.ToString();
         }
 
@@ -75,8 +118,6 @@ namespace zym_api.DAL
             strBuilder = new StringBuilder();
             strBuilder.Append("SELECT ID FROM GOODBASIC ");
             strBuilder.Append("WHERE GOODNAME = N'"+name+"' ");
-<<<<<<< HEAD
-=======
             strBuilder.Append("AND FLAG = 'T'");
             return strBuilder.ToString();
         }
@@ -561,7 +602,6 @@ namespace zym_api.DAL
         {
             strBuilder = new StringBuilder();
             strBuilder.Append("UPDATE SHOPGOOD SET FLAG = '"+ flag + "' WHERE ID = '"+id+"'");
->>>>>>> master
             return strBuilder.ToString();
         }
 

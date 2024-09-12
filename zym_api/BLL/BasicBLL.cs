@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
+using System.Text;
 using System.Web;
+using System.Web.SessionState;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using zym_api.DAL;
 using zym_api.Helper;
 using zym_api.Models;
@@ -41,10 +47,25 @@ namespace zym_api.BLL
             return i;
         }
 
-        public static int SaveGoodBasic(GoodBasic entity)
+        public static string SaveGoodBasic(GoodBasic entity)
         {
-            int i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
-            return i;
+            if(!string.IsNullOrEmpty(entity.Picture))
+            {
+                entity.Picture = "查看";
+            }
+            int i = 0;
+            string strID = "";
+            if (entity.Action == "A")
+            {
+                i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
+                strID = entity.ID.ToString();
+            }
+            else
+            {
+                i = SQLHelper.ExecuteNonQuery(SQL.ChgGoodBasic(entity));
+                strID = entity.GoodID.ToString();
+            }
+            return strID;
         }
 
         public static DataTable GetGoodByName(string name)
@@ -57,8 +78,6 @@ namespace zym_api.BLL
             return dt;
             //添加商品，根据名称或者条码判断是否已经存在，
         }
-<<<<<<< HEAD
-=======
 
         public static DataTable GetGood(string category, string goodName, string barcode, string subBarcode)
         {
@@ -755,6 +774,5 @@ namespace zym_api.BLL
             string strNew = Helper.Helper.Base64(newPsd);
             return SQLHelper.ExecuteNonQuery(SQL.ChgPsd(id, strNew));
         }
->>>>>>> master
     }
 }
