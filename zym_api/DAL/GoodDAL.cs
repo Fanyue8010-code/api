@@ -138,7 +138,7 @@ namespace zym_api.DAL
         {
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append("SELECT   ");
-            strBuilder.Append("(SUM(c.Price) * SUM(d.GoodQty)) AS  Price,    ");
+            strBuilder.Append("(SUM(c.Price* d.GoodQty)) AS  Price,    ");
             strBuilder.Append("SUM(d.GoodQty) AS GoodQty ");
             strBuilder.Append("FROM  [dbo].[GoodCategory] a    ");
             strBuilder.Append("INNER  JOIN [dbo].[GoodBasic] b ON    ");
@@ -414,10 +414,11 @@ namespace zym_api.DAL
             strBuilder.Append(" ,a.[Status]");
             strBuilder.Append(" ,b.TotalPrice");
             strBuilder.Append(" ,b.totalCount ");
+            strBuilder.Append(" ,b.Count  ");
             strBuilder.Append(" ,a.[Status] ");
             strBuilder.Append("FROM  [dbo].[Order] a ");
-            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber], SUM([Price]) AS TotalPrice");
-            strBuilder.Append("  ,SUM(CAST([GoodQty] AS int)) AS TotalCount  ");
+            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber], SUM([Price] * GoodQty) AS TotalPrice");
+            strBuilder.Append("  ,SUM(CAST([GoodQty] AS int)) AS TotalCount,COUNT(*) AS Count    ");
             strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' GROUP BY OpenID,[OrderNumber]) b ON");
             strBuilder.Append("  a.OpenID=b.OpenID AND a.OrderNumber=b.OrderNumber");
             strBuilder.Append(" WHERE a.OpenID='" + OpenId + "'  ");

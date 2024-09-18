@@ -148,10 +148,34 @@ namespace zym_api.BLL
 
                                      }).ToList()
                                  };
-
+                    var updatedResult = result.Select(category => new
+                    {
+                        CategoryID = category.CategoryID,
+                        Category = category.Category,
+                        CategoryCheck = category.CategoryCheck,
+                        merchandises = category.merchandises.Select(ub =>
+                        {
+                            var pictureUrl = ub.Picture;
+                            if (!CheckImageExists(pictureUrl))
+                            {
+                                pictureUrl = "../../assets/_huabanfuben.png"; // Set to default image
+                            }
+                            return new
+                            {
+                                ub.CartID,
+                                ub.GoodCheck,
+                                ub.GoodBasicID,
+                                ub.ShopGoodID,
+                                ub.GoodName,
+                                Picture = pictureUrl,
+                                ub.Price,
+                                ub.GoodQty
+                            };
+                        }).ToList()
+                    });
                     //转为ISON字符串
                     //string jsonResult=JsonConvert.SerializeObject(result);
-                    return JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(updatedResult);
                 }
             }
             catch (Exception ex)
@@ -333,13 +357,36 @@ namespace zym_api.BLL
                                          Picture = r.Field<string>("Picture"),
                                          Price = r.Field<Double>("Price"),
                                          GoodQty = r.Field<int>("GoodQty"),
-
                                      }).ToList()
                                  };
-
+                    var updatedResult = result.Select(category => new
+                    {
+                        CategoryID = category.CategoryID,
+                        Category = category.Category,
+                        CategoryCheck = category.CategoryCheck,
+                        merchandises = category.merchandises.Select(ub =>
+                        {
+                            var pictureUrl = ub.Picture;
+                            if (!CheckImageExists(pictureUrl))
+                            {
+                                pictureUrl = "../../assets/_huabanfuben.png"; // Set to default image
+                            }
+                            return new
+                            {
+                                ub.CartID,
+                                ub.GoodCheck,
+                                ub.GoodBasicID,
+                                ub.ShopGoodID,
+                                ub.GoodName,
+                                Picture = pictureUrl,
+                                ub.Price,
+                                ub.GoodQty
+                            };
+                        }).ToList()
+                    });
                     //转为ISON字符串
                     //string jsonResult=JsonConvert.SerializeObject(result);
-                    return JsonConvert.SerializeObject(result);
+                    return JsonConvert.SerializeObject(updatedResult);
                 }
             }
             catch (Exception ex)
@@ -525,7 +572,8 @@ namespace zym_api.BLL
                                                      PayTime =r.Field<string>("PayTime"),
                                                      ShipDate = r.Field<string>("ShipDate"),
                                                      CompletionTime =  r.Field<string>("CompletionTime"),
-                                                     CancelTime = r.Field<string>("CancelTime")
+                                                     CancelTime = r.Field<string>("CancelTime"),
+                                                     Count = r.Field<int>("Count"),
                                                  }).ToList()
                                              }
                                  };
