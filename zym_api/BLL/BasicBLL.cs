@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using zym_api.DAL;
 using zym_api.Helper;
 using zym_api.Models;
+using System.Drawing;
 
 namespace zym_api.BLL
 {
@@ -92,6 +93,20 @@ namespace zym_api.BLL
                 i = SQLHelper.ExecuteNonQuery(SQL.ChgGoodBasic(entity));
                 strID = entity.GoodID.ToString();
             }
+            if (!string.IsNullOrEmpty(entity.Picture))
+            {
+                byte[] imageBytes = Convert.FromBase64String(entity.Picture.Split(',')[1]);
+                System.IO.File.WriteAllBytes("C:\\inetpub\\wwwroot\\ftp\\GoodImg\\" + strID + ".jpg", imageBytes);
+                //using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+                //{
+                //    // 从内存流创建Image
+                //    using (Image image = Image.FromStream(ms))
+                //    {
+                //        // 保存图片到指定路径
+                //        image.Save("C:\\inetpub\\wwwroot\\ftp\\GoodImg\\" + strID + ".jpg");
+                //    }
+                //}
+            }
             return strID;
         }
 
@@ -113,23 +128,24 @@ namespace zym_api.BLL
             {
                 throw new Exception("商品不存在");
             }
-            //string strIP = ConfigurationManager.AppSettings["IP"].ToString();
-            //DataTable dtPath = SQLHelper.ExecuteDataTable(SQL.GetPath("GoodBasicPage"));
-            //for (int i = 0; i < dt.Rows.Count; i++)
-            //{
-            //    string strPicture = dt.Rows[i]["Picture"].ToString();
-            //    string strPath = "";
-            //    if (string.IsNullOrEmpty(strPicture))
-            //    {
-            //        strPath = "";
-            //    }
-            //    else
-            //    {
-            //        string strGoodID = dt.Rows[i]["ID"].ToString();
-            //        strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/" + strGoodID + ".jpg";
-            //    }
-            //    dt.Rows[i]["Picture"] = strPath;
-            //}
+            string strIP = ConfigurationManager.AppSettings["IP"].ToString();
+            DataTable dtPath = SQLHelper.ExecuteDataTable(SQL.GetPath("GoodBasicPage"));
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string strPicture = dt.Rows[i]["Picture"].ToString();
+                string strPath = "";
+                if (string.IsNullOrEmpty(strPicture))
+                {
+                    strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/default.jpg";
+                }
+                else
+                {
+                    string strGoodID = dt.Rows[i]["ID"].ToString();
+                    strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/" + strGoodID + ".jpg";
+                    Log.WriteLog(strPath);
+                }
+                dt.Rows[i]["Picture"] = strPath;
+            }
             return dt;
         }
         public static int DelGood(string id)

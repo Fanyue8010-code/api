@@ -3,93 +3,48 @@
   "WorkspaceRootPath": "D:\\Program\\zym_api\\zym_api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\sqlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\sqlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\bll\\addressbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\bll\\addressbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\jsonhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\jsonhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\dal\\addressdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\dal\\addressdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\goodmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\goodmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\addressmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\addressmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\queryreturnmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\queryreturnmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\dal\\logindal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\dal\\logindal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\imagehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\imagehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\loginmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|d:\\program\\zym_api\\zym_api\\zym_api\\controllers\\syscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\syscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\bll\\basicbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\bll\\basicbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|d:\\program\\zym_api\\zym_api\\zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\basicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\basicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\dal\\sql.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\dal\\sql.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|d:\\program\\zym_api\\zym_api\\zym_api\\helper\\sqlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\sqlhelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\basicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\models\\basicmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\ftphelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\ftphelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\syscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\syscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\basiccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|d:\\program\\zym_api\\zym_api\\zym_api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
       "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\log.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\log.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\bll\\addressbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -98,10 +53,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\helper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\helper\\ftphelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|solutionrelative:zym_api\\helper\\ftphelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{174D8190-6D4B-458E-84A2-1ED8D291B3C8}|zym_api\\zym_api.csproj|D:\\Program\\zym_api\\zym_api\\zym_api\\models\\req.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -115,20 +66,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LoginBLL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\LoginBLL.cs",
-              "RelativeDocumentMoniker": "zym_api\\BLL\\LoginBLL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\LoginBLL.cs",
-              "RelativeToolTip": "zym_api\\BLL\\LoginBLL.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAIAxwBsAAAAYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T15:15:26.943Z",
+              "DocumentIndex": 7,
               "Title": "SysController.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\SysController.cs",
               "RelativeDocumentMoniker": "zym_api\\Controllers\\SysController.cs",
@@ -141,108 +83,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "LoginController.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "zym_api\\Controllers\\LoginController.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\LoginController.cs",
               "RelativeToolTip": "zym_api\\Controllers\\LoginController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFIAAAAxAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-11T13:33:03.879Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 9,
               "Title": "Log.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\Log.cs",
               "RelativeDocumentMoniker": "zym_api\\Helper\\Log.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\Log.cs",
               "RelativeToolTip": "zym_api\\Helper\\Log.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAA4AAAAYAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-25T09:26:08.863Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AddressController.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\AddressController.cs",
-              "RelativeDocumentMoniker": "zym_api\\Controllers\\AddressController.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\AddressController.cs",
-              "RelativeToolTip": "zym_api\\Controllers\\AddressController.cs",
-              "ViewState": "AQIAAEEAAAAAAAAAAAAswGkAAAAHAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T12:49:37.24Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "GoodDAL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\GoodDAL.cs",
-              "RelativeDocumentMoniker": "zym_api\\DAL\\GoodDAL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\GoodDAL.cs",
-              "RelativeToolTip": "zym_api\\DAL\\GoodDAL.cs",
-              "ViewState": "AQIAAI4BAAAAAAAAAAAhwKABAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-19T16:29:07.687Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "BasicBLL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\BasicBLL.cs",
-              "RelativeDocumentMoniker": "zym_api\\BLL\\BasicBLL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\BasicBLL.cs",
-              "RelativeToolTip": "zym_api\\BLL\\BasicBLL.cs",
-              "ViewState": "AQIAAO4AAAAAAAAAAAAkwBwAAAAYAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-13T12:22:46.998Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "GoodController.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\GoodController.cs",
-              "RelativeDocumentMoniker": "zym_api\\Controllers\\GoodController.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\GoodController.cs",
-              "RelativeToolTip": "zym_api\\Controllers\\GoodController.cs",
-              "ViewState": "AQIAAGgBAAAAAAAAAAAgwHIBAAAzAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-19T16:26:42.182Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "GoodBLL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\GoodBLL.cs",
-              "RelativeDocumentMoniker": "zym_api\\BLL\\GoodBLL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\GoodBLL.cs",
-              "RelativeToolTip": "zym_api\\BLL\\GoodBLL.cs",
-              "ViewState": "AQIAAAUCAAAAAAAAAAAxwAsCAABRAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-19T16:28:38.914Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AddressBLL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\AddressBLL.cs",
-              "RelativeDocumentMoniker": "zym_api\\BLL\\AddressBLL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\AddressBLL.cs",
-              "RelativeToolTip": "zym_api\\BLL\\AddressBLL.cs",
-              "ViewState": "AQIAAFEAAAAAAAAAAAAYwFUAAAA5AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T12:57:53.985Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
               "Title": "FTPHelper.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\FTPHelper.cs",
               "RelativeDocumentMoniker": "zym_api\\Helper\\FTPHelper.cs",
@@ -250,11 +117,12 @@
               "RelativeToolTip": "zym_api\\Helper\\FTPHelper.cs",
               "ViewState": "AQIAAAoAAAAAAAAAAAAnwFoAAAAiAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-22T11:31:12.534Z"
+              "WhenOpened": "2024-08-22T11:31:12.534Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
               "Title": "BasicModel.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\BasicModel.cs",
               "RelativeDocumentMoniker": "zym_api\\Models\\BasicModel.cs",
@@ -275,192 +143,76 @@
               "RelativeToolTip": "zym_api\\Models\\Req.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAuwAoAAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-19T16:25:02.51Z"
+              "WhenOpened": "2024-08-18T07:15:10.302Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AddressDAL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\AddressDAL.cs",
-              "RelativeDocumentMoniker": "zym_api\\DAL\\AddressDAL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\AddressDAL.cs",
-              "RelativeToolTip": "zym_api\\DAL\\AddressDAL.cs",
-              "ViewState": "AQIAAFcAAAAAAAAAAAAgwF0AAAArAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T12:58:14.088Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "SQLHelper.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\SQLHelper.cs",
               "RelativeDocumentMoniker": "zym_api\\Helper\\SQLHelper.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\SQLHelper.cs",
               "RelativeToolTip": "zym_api\\Helper\\SQLHelper.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAADgvx4AAAAoAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAADgvxoAAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-14T11:34:51.824Z"
+              "WhenOpened": "2024-08-14T11:34:51.824Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "AddressModel.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\AddressModel.cs",
-              "RelativeDocumentMoniker": "zym_api\\Models\\AddressModel.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\AddressModel.cs",
-              "RelativeToolTip": "zym_api\\Models\\AddressModel.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAA6wA8AAAAvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T12:58:39.618Z"
-            },
-            {
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "BasicBLL.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\BasicBLL.cs",
               "RelativeDocumentMoniker": "zym_api\\BLL\\BasicBLL.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\BasicBLL.cs",
               "RelativeToolTip": "zym_api\\BLL\\BasicBLL.cs",
-              "ViewState": "AQIAAF4CAAAAAAAAAAAWwHYCAAA5AAAA",
+              "ViewState": "AQIAAHgAAAAAAAAAAAAuwFwAAAA6AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-20T12:58:39.618Z"
+              "WhenOpened": "2024-08-13T12:22:46.998Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "QueryReturnModel.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\QueryReturnModel.cs",
-              "RelativeDocumentMoniker": "zym_api\\Models\\QueryReturnModel.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\QueryReturnModel.cs",
-              "RelativeToolTip": "zym_api\\Models\\QueryReturnModel.cs",
-              "ViewState": "AQIAAAEAAAAAAAAAAAArwAkAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T15:10:20.937Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "LoginDAL.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\LoginDAL.cs",
-              "RelativeDocumentMoniker": "zym_api\\DAL\\LoginDAL.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\LoginDAL.cs",
-              "RelativeToolTip": "zym_api\\DAL\\LoginDAL.cs",
-              "ViewState": "AQIAAA4AAAAAAAAAAADwvyEAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T15:16:17.363Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "LoginController.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\LoginController.cs",
-              "RelativeDocumentMoniker": "zym_api\\Controllers\\LoginController.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\LoginController.cs",
-              "RelativeToolTip": "zym_api\\Controllers\\LoginController.cs",
-              "ViewState": "AQIAAEIAAAAAAAAAAAAuwEsAAAAQAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-15T14:53:59.765Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ImageHelper.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\ImageHelper.cs",
-              "RelativeDocumentMoniker": "zym_api\\Helper\\ImageHelper.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\ImageHelper.cs",
-              "RelativeToolTip": "zym_api\\Helper\\ImageHelper.cs",
-              "ViewState": "AQIAAC8AAAAAAAAAAAAswAwAAAAdAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T15:50:15.218Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "JsonHelper.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\JsonHelper.cs",
-              "RelativeDocumentMoniker": "zym_api\\Helper\\JsonHelper.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\JsonHelper.cs",
-              "RelativeToolTip": "zym_api\\Helper\\JsonHelper.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAADwvxYAAAA4AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T16:41:08.38Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "BasicModel.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\BasicModel.cs",
-              "RelativeDocumentMoniker": "zym_api\\Models\\BasicModel.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\BasicModel.cs",
-              "RelativeToolTip": "zym_api\\Models\\BasicModel.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAqwBUAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-13T12:25:35.954Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "LoginModel.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\LoginModel.cs",
-              "RelativeDocumentMoniker": "zym_api\\Models\\LoginModel.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Models\\LoginModel.cs",
-              "RelativeToolTip": "zym_api\\Models\\LoginModel.cs",
-              "ViewState": "AQIAAAEAAAAAAAAAAADgvwwAAAAlAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T15:11:58.181Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 1,
               "Title": "SQL.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\SQL.cs",
               "RelativeDocumentMoniker": "zym_api\\DAL\\SQL.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\DAL\\SQL.cs",
               "RelativeToolTip": "zym_api\\DAL\\SQL.cs",
-              "ViewState": "AQIAAA8AAAAAAAAAAAArwBkAAAAdAAAA",
+              "ViewState": "AQIAAHEAAAAAAAAAAAAxwIYAAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-13T12:20:33.244Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "SysController.cs",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\SysController.cs",
-              "RelativeDocumentMoniker": "zym_api\\Controllers\\SysController.cs",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\SysController.cs",
-              "RelativeToolTip": "zym_api\\Controllers\\SysController.cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAAwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-17T15:05:34.348Z",
+              "WhenOpened": "2024-08-13T12:20:33.244Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 5,
               "Title": "BasicController.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\BasicController.cs",
               "RelativeDocumentMoniker": "zym_api\\Controllers\\BasicController.cs",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\BasicController.cs",
               "RelativeToolTip": "zym_api\\Controllers\\BasicController.cs",
-              "ViewState": "AQIAABYAAAAAAAAAAAAQwC8AAAA9AAAA",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAlwFsAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-13T12:19:05.285Z"
+              "WhenOpened": "2024-08-13T12:19:05.285Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 8,
               "Title": "Web.config",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Web.config",
               "RelativeDocumentMoniker": "zym_api\\Web.config",
               "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Web.config",
               "RelativeToolTip": "zym_api\\Web.config",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAOAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAAQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-08-14T14:13:13.86Z",
+              "WhenOpened": "2024-09-20T11:53:46.776Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "AddressController.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Controllers\\AddressController.cs",
               "RelativeDocumentMoniker": "zym_api\\Controllers\\AddressController.cs",
@@ -468,12 +220,11 @@
               "RelativeToolTip": "zym_api\\Controllers\\AddressController.cs",
               "ViewState": "AQIAABkAAAAAAAAAAAAxwBgAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-11T13:34:02.145Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-11T13:34:02.145Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Helper.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Helper\\Helper.cs",
               "RelativeDocumentMoniker": "zym_api\\Helper\\Helper.cs",
@@ -485,20 +236,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Web.config",
-              "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\Web.config",
-              "RelativeDocumentMoniker": "zym_api\\Web.config",
-              "ToolTip": "D:\\Program\\zym_api\\zym_api\\zym_api\\Web.config",
-              "RelativeToolTip": "zym_api\\Web.config",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAAB4AAABTAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
-              "WhenOpened": "2024-09-20T11:53:46.776Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "AddressBLL.cs",
               "DocumentMoniker": "D:\\Program\\zym_api\\zym_api\\zym_api\\BLL\\AddressBLL.cs",
               "RelativeDocumentMoniker": "zym_api\\BLL\\AddressBLL.cs",
