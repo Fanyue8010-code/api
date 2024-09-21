@@ -55,5 +55,20 @@ namespace zym_api.Controllers
 
         }
 
+        [HttpGet]
+        public void Base64()
+        {
+            SQLHelper.DB();
+            string originalString = "ZYM";
+            string encodedString = originalString;
+
+            // 第一次Base64编码
+            encodedString = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(encodedString));
+
+            // 第二次Base64编码
+            encodedString = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(encodedString));
+
+        }
+
     }
 }
