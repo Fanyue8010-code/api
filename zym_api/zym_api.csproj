@@ -121,9 +121,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BLL\AddressBLL.cs" />
     <Compile Include="BLL\BasicBLL.cs" />
+    <Compile Include="BLL\GoodBLL.cs" />
+    <Compile Include="BLL\LoginBLL.cs" />
+    <Compile Include="Controllers\AddressController.cs" />
     <Compile Include="Controllers\BasicController.cs" />
+    <Compile Include="Controllers\GoodController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SysController.cs" />
+    <Compile Include="DAL\AddressDAL.cs" />
+    <Compile Include="DAL\GoodDAL.cs" />
+    <Compile Include="DAL\LoginDAL.cs" />
     <Compile Include="DAL\SQL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -131,9 +140,15 @@
     <Compile Include="Helper\ControllerFeedback.cs" />
     <Compile Include="Helper\FTPHelper.cs" />
     <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="Helper\JsonHelper.cs" />
     <Compile Include="Helper\Log.cs" />
     <Compile Include="Helper\SQLHelper.cs" />
+    <Compile Include="Models\AddressModel.cs" />
     <Compile Include="Models\BasicModel.cs" />
+    <Compile Include="Models\GoodModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\QueryReturnModel.cs" />
     <Compile Include="Models\Req.cs" />
     <Compile Include="OptionsMethodModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -87,6 +87,21 @@ namespace zym_api.DAL
             return strBuilder.ToString();
         }
 
+        public static string IsExistGood(string barcode)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT GoodName FROM GoodBasic ");
+            strBuilder.Append("WHERE FLAG = 'T' AND PackBarcode = '" + barcode + "'");
+            return strBuilder.ToString();
+        }
+        public static string IsExistGoodSubBarcode(string subBarcode)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT GoodName FROM GoodBasic ");
+            strBuilder.Append("WHERE FLAG = 'T' AND SubPackBarcode = '" + subBarcode + "'");
+            return strBuilder.ToString();
+        }
+
         public static string ChgGoodBasic(GoodBasic entity)
         {
             strBuilder = new StringBuilder();
