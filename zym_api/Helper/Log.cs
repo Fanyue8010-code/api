@@ -6,26 +6,29 @@ using System.Text;
 using System.Web;
 using System.Web.Services.Description;
 
-public class Log
+namespace zym_api.Helper
 {
-    public static void WriteLog(string log)
+    public class Log
     {
-        string strPath = @"C:\Log\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
-        StringBuilder str = new StringBuilder();
-        str.Append(log);
-        StreamWriter sw ;
-        if (!File.Exists(strPath))
+        public static void WriteLog(string log)
         {
-            sw = File.CreateText(strPath);
+            string strPath = @"C:\Log\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
+            StringBuilder str = new StringBuilder();
+            str.Append(log);
+            StreamWriter sw;
+            if (!File.Exists(strPath))
+            {
+                sw = File.CreateText(strPath);
+            }
+            else
+            {
+                sw = File.AppendText(strPath);
+            }
+
+            sw.WriteLine(str.ToString());
+            sw.Close();
+
+
         }
-        else
-        {
-            sw = File.AppendText(strPath);
-        }
-
-        sw.WriteLine(str.ToString());
-        sw.Close();
-
-
     }
 }

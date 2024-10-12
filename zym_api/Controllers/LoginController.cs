@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -42,23 +43,25 @@ namespace zym_api.Controllers
         }
         public string GetAppId()
         {
-            DataTable dt = SQLHelper.ExecuteDataTable("select Config2 from [dbo].[Config] where Config1 = 'appid'");
+            DataTable dt = SQLHelper.ExecuteDataTable("select Config2 from [dbo].[Config] where Config1 = 'pay_appid'");
             if (dt.Rows.Count > 0)
             {
                 return dt.Rows[0]["Config2"].ToString();
             }
+            string df = dt.Rows[0]["Config2"].ToString();
+           
             return null; // 或抛出异常，视具体需求而定
         }
         public string GetSecret()
         {
-            DataTable dt = SQLHelper.ExecuteDataTable("select Config2 from [dbo].[Config] where Config1 = 'secret'");
+            DataTable dt = SQLHelper.ExecuteDataTable("select Config2 from [dbo].[Config] where Config1 = 'appsecret'");
             if (dt.Rows.Count > 0)
             {
                 return dt.Rows[0]["Config2"].ToString();
             }
             return null; // 或抛出异常，视具体需求而定
         }
-        string secret = ConfigurationManager.AppSettings["secret"];
+        //string secret = ConfigurationManager.AppSettings["secret"];
         /// <summary>
         /// 根据code获取OpenId
         /// </summary>

@@ -23,6 +23,7 @@ namespace zym_api.Helper
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sessionUrl);
                 request.Method = "GET";
                 request.ContentType = "text/html;charset=UTF-8";
+                
 
                 // 获取响应
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using System.Drawing;
 using System.Net;
 using System.Configuration;
+using zym_api.Controllers;
 
 namespace zym_api.BLL
 {
@@ -37,7 +38,7 @@ namespace zym_api.BLL
                         // 判断图片是否存在
                         if (!CheckImageExists(ubi.Picture))
                         {
-                            ubi.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                            ubi.Picture = "http://49.233.191.59/ftp/GoodImg/default.jpg";  // 设置为备用图片
                         }
 
                         list.Add(ubi);
@@ -87,9 +88,15 @@ namespace zym_api.BLL
                         ubi.Picture = dr["Picture"].ToString();
                         if (!CheckImageExists(ubi.Picture))
                         {
-                            ubi.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                            var lastSlashIndex = ubi.Picture.LastIndexOf('/');
+                            if (lastSlashIndex != -1)
+                            {
+                                ubi.Picture = ubi.Picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                            }
+                            //  ubi.Picture = "http://49.233.191.59/ftp/GoodImg/default.jpg"; // 设置为备用图片
                         }
-                        ubi.Price = dr["Price"].ToString();
+                        decimal Price = Convert.ToDecimal(dr["Price"]);
+                        ubi.Price = Price;
                         ubi.GoodQty = dr["GoodQty"].ToString();
                         list.Add(ubi);
                     }
@@ -143,7 +150,7 @@ namespace zym_api.BLL
                                          ShopGoodID = r.Field<Guid>("ShopGoodID"),
                                          GoodName = r.Field<string>("GoodName"),
                                          Picture = r.Field<string>("Picture"),
-                                         Price = r.Field<Double>("Price"),
+                                         Price = r.Field<decimal>("Price"),
                                          GoodQty = r.Field<int>("GoodQty"),
 
                                      }).ToList()
@@ -156,9 +163,15 @@ namespace zym_api.BLL
                         merchandises = category.merchandises.Select(ub =>
                         {
                             var pictureUrl = ub.Picture;
+
                             if (!CheckImageExists(pictureUrl))
                             {
-                                pictureUrl = "../../assets/_huabanfuben.png"; // Set to default image
+                                var lastSlashIndex = pictureUrl.LastIndexOf('/');
+                                if (lastSlashIndex != -1)
+                                {
+                                    pictureUrl = ub.Picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                                }
+                                //pictureUrl = "http://49.233.191.59/ftp/GoodImg/default.jpg";  // Set to default image
                             }
                             return new
                             {
@@ -355,7 +368,7 @@ namespace zym_api.BLL
                                          ShopGoodID = r.Field<Guid>("ShopGoodID"),
                                          GoodName = r.Field<string>("GoodName"),
                                          Picture = r.Field<string>("Picture"),
-                                         Price = r.Field<Double>("Price"),
+                                         Price = r.Field<decimal>("Price"),
                                          GoodQty = r.Field<int>("GoodQty"),
                                      }).ToList()
                                  };
@@ -369,7 +382,12 @@ namespace zym_api.BLL
                             var pictureUrl = ub.Picture;
                             if (!CheckImageExists(pictureUrl))
                             {
-                                pictureUrl = "../../assets/_huabanfuben.png"; // Set to default image
+                                var lastSlashIndex = pictureUrl.LastIndexOf('/');
+                                if (lastSlashIndex != -1)
+                                {
+                                    pictureUrl = ub.Picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                                }
+                                //  pictureUrl = "http://49.233.191.59/ftp/GoodImg/default.jpg";  // Set to default image
                             }
                             return new
                             {
@@ -397,7 +415,7 @@ namespace zym_api.BLL
             }
         }
 
-        public static string InsertPayOrder(List<GoodsPayList> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg,string OrderNumber, string Status)
+        public static string InsertPayOrder(List<GoodsPayList> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg, string OrderNumber, string Status)
         {
             errMsg = "OK";
             //List<GoodsPay> list = new List<GoodsPay>();
@@ -431,18 +449,23 @@ namespace zym_api.BLL
                         ub.Category = ubi.Category;
                         ub.GoodName = Orders.GoodName;
                         ub.Picture = Orders.Picture;
-                        // 判断图片是否存在
+                        //  判断图片是否存在
                         if (!CheckImageExists(ub.Picture))
                         {
-                            ub.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                            var lastSlashIndex = ub.Picture.LastIndexOf('/');
+                            if (lastSlashIndex != -1)
+                            {
+                                ub.Picture = ub.Picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                            }
+                            // ub.Picture = "http://49.233.191.59/ftp/GoodImg/default.jpg"; // 设置为备用图片
                         }
                         ub.Price = Orders.Price;
-                        ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty ;
+                        ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty;
                         ub.Name = Name;
                         ub.Phone = Phone;
                         ub.Region = Region;
                         ub.Address = Address;
-                         ub.Status = Status;
+                        ub.Status = Status;
                         int insert = SQLHelper.ExecuteNonQuery(GoodDAL.InsertOrder(ub));
                         if (ub.Status == "待发货")
                         {
@@ -467,7 +490,7 @@ namespace zym_api.BLL
 
             }
         }
-        public static string InsertPayOrder(List<GoodsPay> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg,string OrderNumber, string Status)
+        public static string InsertPayOrder(List<GoodsPay> goodsPays, string OpenId, string Name, string Phone, string Region, string Address, out string errMsg, string OrderNumber, string Status)
         {
             errMsg = "OK";
             //List<GoodsPay> list = new List<GoodsPay>();
@@ -490,7 +513,12 @@ namespace zym_api.BLL
                     // 判断图片是否存在
                     if (!CheckImageExists(ub.Picture))
                     {
-                        ub.Picture = "../../assets/_huabanfuben.png"; // 设置为备用图片
+                        var lastSlashIndex = ub.Picture.LastIndexOf('/');
+                        if (lastSlashIndex != -1)
+                        {
+                            ub.Picture = ub.Picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                        }
+                        //ub.Picture = "http://49.233.191.59/ftp/GoodImg/default.jpg"; // 设置为备用图片
                     }
                     ub.Price = Orders.Price;
                     ub.GoodQty = Orders.GoodQty == "" ? "1" : Orders.GoodQty;
@@ -515,13 +543,13 @@ namespace zym_api.BLL
             }
         }
 
-        public static string GetOrder(string OpenId, string ID,string menuTapCurrent,out string errMsg)
+        public static string GetOrder(string OpenId, string ID, string menuTapCurrent, out string errMsg)
         {
             errMsg = "OK";
             List<GoodsPay> list = new List<GoodsPay>();
             try
             {
-                using (DataTable dt = SQLHelper.ExecuteDataTable(GoodDAL.GetOrder(OpenId, ID,menuTapCurrent)))
+                using (DataTable dt = SQLHelper.ExecuteDataTable(GoodDAL.GetOrder(OpenId, ID, menuTapCurrent)))
                 {
                     var result = from row in dt.AsEnumerable()
                                  group row by new
@@ -534,17 +562,19 @@ namespace zym_api.BLL
                                      OrderNumber = grp.Key.OrderId,
                                      OpenID = grp.Key.ID,
                                      Status = grp.First().Field<string>("Status"),
-                                     TotalPrice = grp.First().Field<double>("TotalPrice"),
+                                     TotalPrice = grp.First().Field<decimal?>("TotalPrice"),
                                      TotalCount = grp.First().Field<int>("TotalCount"),
                                      Name = grp.First().Field<string>("Name"),
                                      Phone = grp.First().Field<string>("Phone"),
                                      Region = grp.First().Field<string>("Region"),
                                      Address = grp.First().Field<string>("Address"),
-                                     CreateTime =  grp.First().Field<string>("CreateTime"),
-                                     PayTime = grp.First().Field<string>("PayTime"),
-                                     ShipDate = grp.First().Field<string>("ShipDate"),
-                                     CompletionTime =  grp.First().Field<string>("CompletionTime"),
-                                     CancelTime = grp.First().Field<string>("CancelTime"),
+                                     CreateTime = grp.First().Field<string>("CreateTime") == null ? "" : grp.First().Field<string>("CreateTime"),
+                                     PayTime = grp.First().Field<string>("PayTime") == null ? "" : grp.First().Field<string>("PayTime"),
+                                     ShipDate = grp.First().Field<string>("ShipDate") == null ? "" : grp.First().Field<string>("ShipDate"),
+                                     CompletionTime = grp.First().Field<string>("CompletionTime") == null ? "" : grp.First().Field<string>("CompletionTime"),
+                                     CancelTime = grp.First().Field<string>("CancelTime") == null ? "" : grp.First().Field<string>("CancelTime"),
+                                     TotalPriceRefund = grp.First().Field<decimal?>("TotalPriceRefund"),
+                                     TotalApplyPrice = grp.FirstOrDefault()?.Field<decimal?>("TotalApplyPrice"),
                                      Goods = from g in grp
                                              group g by new
                                              {
@@ -559,62 +589,50 @@ namespace zym_api.BLL
                                                  // Phone = ggrp.Key.Phone,
                                                  // Region = ggrp.Key.Region,
                                                  //  Address = ggrp.Key.Address,
-                                                 Merchandises = ggrp.Select(r => new
+                                                 Merchandises = ggrp.Select(r =>
                                                  {
-                                                     CartID = r.IsNull("CartID") ? (Guid?)null : r.Field<Guid>("CartID"),
-                                                     GoodBasicID = r.Field<Guid>("GoodBasicID"),
-                                                     ShopGoodID = r.Field<Guid>("ShopGoodID"),
-                                                     GoodName = r.Field<string>("GoodName"),
-                                                     Picture = r.Field<string>("Picture"),
-                                                     Price = r.Field<double>("Price"),
-                                                     GoodQty = r.Field<string>("GoodQty"),
-                                                     CreateTime = r.Field<string>("CreateTime"),
-                                                     PayTime =r.Field<string>("PayTime"),
-                                                     ShipDate = r.Field<string>("ShipDate"),
-                                                     CompletionTime =  r.Field<string>("CompletionTime"),
-                                                     CancelTime = r.Field<string>("CancelTime"),
-                                                     Count = r.Field<int>("Count"),
+                                                     var picture = r.Field<string>("Picture");
+                                                     if (!CheckImageExists(picture))
+                                                     {
+                                                         var lastSlashIndex = picture.LastIndexOf('/');
+                                                         if (lastSlashIndex != -1)
+                                                         {
+                                                             picture = picture.Substring(0, lastSlashIndex + 1) + "default.jpg";
+                                                         }
+                                                     }
+
+                                                     return new
+                                                     {
+                                                         ID = r.Field<Guid>("ID"),
+                                                         Name = r.Field<string>("Name"),
+                                                         Phone = r.Field<string>("Phone"),
+                                                         Region = r.Field<string>("Region"),
+                                                         Address = r.Field<string>("Address"),
+                                                         Status = r.Field<string>("Status"),
+                                                         OrderNumber = grp.Key.OrderId,
+                                                         CartID = r.IsNull("CartID") ? (Guid?)null : r.Field<Guid>("CartID"),
+                                                         GoodBasicID = r.Field<Guid>("GoodBasicID"),
+                                                         ShopGoodID = r.Field<Guid>("ShopGoodID"),
+                                                         GoodName = r.Field<string>("GoodName"),
+                                                         Picture = picture,
+                                                         Price = r.Field<decimal?>("Price"),
+                                                         GoodQty = r.Field<int>("GoodQty"),
+                                                         CreateTime = r.Field<string>("CreateTime"),
+                                                         PayTime = r.Field<string>("PayTime"),
+                                                         ShipDate = r.Field<string>("ShipDate"),
+                                                         CompletionTime = r.Field<string>("CompletionTime"),
+                                                         CancelTime = r.Field<string>("CancelTime"),
+                                                         Count = r.Field<int>("Count"),
+                                                         TotalPriceRefund = r.Field<decimal?>("TotalPriceRefund"),
+                                                         ApplyPhone = r.Field<string>("ApplyPhone"),
+                                                         ApplyReason = r.Field<string>("ApplyReason"),
+                                                         ApplyType = r.Field<string>("ApplyType"),
+                                                         ApplyPrice = r.Field<decimal?>("ApplyPrice"),
+                                                         ApplyRemark = r.Field<string>("ApplyRemark"),
+                                                     };
                                                  }).ToList()
                                              }
                                  };
-                    //var result = from row in dt.AsEnumerable()
-                    //             group row by new
-                    //             {
-                    //                 ID = row.Field<string>("OpenID"),
-                    //                 OrderId = row.Field<string>("OrderNumber")
-                    //             } into grp
-                    //             select new
-                    //             {
-                    //                 OrderNumber = grp.Key.OrderId,
-                    //                 OpenID = grp.Key.ID,
-                    //                 TotalPrice = grp.First().Field<Double>("TotalPrice"),
-                    //                 TotalCount = grp.First().Field<int>("TotalCount"),
-                    //                 Category = grp.First().Field<string>("Category"),
-                    //                 CategoryID = grp.First().Field<Guid>("CategoryID"),
-                    //                 Name = grp.First().Field<string>("Name"),
-                    //                 Phone = grp.First().Field<string>("Phone"),
-                    //                 Region = grp.First().Field<string>("Region"),
-                    //                 Address = grp.First().Field<string>("Address"),
-                    //                 merchandises = grp.Select(r => new
-                    //                 {
-                    //                     CartID = r.IsNull("CartID") ? (Guid?)null : r.Field<Guid>("CartID"),
-                    //                     //GoodCheck = r.Field<Boolean>("GoodCheck"),
-                    //                     GoodBasicID = r.Field<Guid>("GoodBasicID"),
-                    //                     ShopGoodID = r.Field<Guid>("ShopGoodID"),
-                    //                     GoodName = r.Field<string>("GoodName"),
-                    //                     Picture = r.Field<string>("Picture"),
-                    //                     Price = r.Field<Double>("Price"),
-                    //                     GoodQty = r.Field<string>("GoodQty"),
-                    //                     CreateTime = r.IsNull("CreateTime") ? (DateTime?)null :r.Field<DateTime>("CreateTime"),
-                    //                     PayTime =  r.IsNull("PayTime") ? (DateTime?)null :r.Field<DateTime>("PayTime"),
-                    //                     ShipDate =  r.IsNull("ShipDate") ? (DateTime?)null : r.Field<DateTime>("ShipDate"),
-                    //                     CompletionTime = r.IsNull("CompletionTime") ? (DateTime?)null : r.Field<DateTime>("CompletionTime"),
-
-                    //                 }).ToList()
-                    //             };
-
-                    //转为ISON字符串
-                    //string jsonResult=JsonConvert.SerializeObject(result);
                     return JsonConvert.SerializeObject(result);
                 }
             }
@@ -639,20 +657,31 @@ namespace zym_api.BLL
                 return errMsg;
             }
         }
-        public static string NoPayOrder(string OpenId, string OrderNumber, out string errMsg)
-        {
-            errMsg = "OK";
-            try
-            {
-                int dt = SQLHelper.ExecuteNonQuery(GoodDAL.NoPayOrder(OpenId, OrderNumber));
-                return "OK";
-            }
-            catch (Exception ex)
-            {
-                errMsg = ex.Message;
-                return errMsg;
-            }
-        }
+        //public static string NoPayOrder(string OpenId, string OrderNumber, out string errMsg)
+        //{
+        //    errMsg = "OK";
+        //    try
+        //    {
+        //        using (DataTable dt1 = SQLHelper.ExecuteDataTable(GoodDAL.GetNeedCancelOrder(OpenId, OrderNumber)))
+        //        {
+        //            foreach (DataRow dr in dt1.Rows)
+        //            {
+        //                string OrdersStatus = dr["Status"].ToString();
+        //                if (OrdersStatus != "待付款")
+        //                {
+        //                    throw new Exception("此订单已经处于" + OrdersStatus + "请下拉刷新页面");
+        //                }
+        //            }
+        //        }
+        //     int dt = SQLHelper.ExecuteNonQuery(GoodDAL.NoPayOrder(OpenId, OrderNumber));
+        //        return "OK";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errMsg = ex.Message;
+        //        return errMsg;
+        //    }
+        //}
         public static string RefundOrder(string OpenId, string OrderNumber, out string errMsg)
         {
             errMsg = "OK";
@@ -667,5 +696,68 @@ namespace zym_api.BLL
                 return errMsg;
             }
         }
+        public static string NoPayOrders(string OpenId, out string errMsg)
+        {
+
+            errMsg = "OK";
+            try
+            {
+                using (DataTable dt = SQLHelper.ExecuteDataTable(GoodDAL.NoPayOrders(OpenId)))
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        // string value = dr["ColumnName"].ToString(); // 获取特定列的值
+                        int Up = SQLHelper.ExecuteNonQuery(GoodDAL.UpdateOrderFlag(OpenId, dr["ShopGoodID"].ToString(), dr["OrderID"].ToString()));
+                    }
+                }
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return errMsg;
+            }
+
+        }
+        public static string ApplyRefund(string OpenId, string ID, string Phone, string Reason, string Type, string Price, string Remark, out string errMsg)
+        {
+
+            errMsg = "OK";
+            try
+            {
+                int Up = SQLHelper.ExecuteNonQuery(GoodDAL.ApplyRefund(OpenId, ID, Phone, Reason, Type, Price, Remark));
+                // using (DataTable dt = SQLHelper.ExecuteDataTable(GoodDAL.NoRefundOrders(OpenId)))
+                // {
+                //     foreach (DataRow dr in dt.Rows)
+                //     {
+                //         // string value = dr["ColumnName"].ToString(); // 获取特定列的值
+                ////     string    status = await  RefundController.GetRefunStatus(dr["Out_refund_no"].ToString());
+                //        // int Up = SQLHelper.ExecuteNonQuery(GoodDAL.UpdateOrderFlag(OpenId, dr["Out_refund_no"].ToString()));
+                //     }
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return errMsg;
+            }
+
+        }
+
+        //public static string NoPayOrderCancel(string OpenId, string OrderNumber, out string errMsg)
+        //{
+        //    errMsg = "OK";
+        //    try
+        //    {
+        //        int dt = SQLHelper.ExecuteNonQuery(GoodDAL.NoPayOrderCancel(OpenId, OrderNumber));
+        //        return "OK";
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        errMsg = ex.Message;
+        //        return errMsg;
+        //    }
+        //}
     }
 }

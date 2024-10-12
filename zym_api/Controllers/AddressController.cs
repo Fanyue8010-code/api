@@ -1,8 +1,16 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Security;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using zym_api.BLL;
@@ -29,6 +37,7 @@ namespace zym_api.Controllers
             qre.message = message;
             return Ok(qre);
         }
+      
         [HttpGet]
         public IHttpActionResult InsertAddressInfo(string OpenId,string Name, string Phone, string Region,string Address,string Status, string Id)
         {

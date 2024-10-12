@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
-using System.Xml.Linq;
-using zym_api.Models;
+﻿using System.Text;
 using static zym_api.Models.GoodModel;
 
 namespace zym_api.DAL
@@ -29,6 +20,7 @@ namespace zym_api.DAL
         }
         public static string GetGoodBasic(string CategoryID, string SearchValue, string OpenId)
         {
+
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append("  SELECT  ");
             strBuilder.Append("  d.ID AS CartID,   ");
@@ -37,9 +29,10 @@ namespace zym_api.DAL
             strBuilder.Append(" c.ID AS ShopGoodID, ");
             strBuilder.Append("  a.Category,   ");
             strBuilder.Append("  (b.GoodName + ' | '+ ( CAST(c.Qty AS nvarchar) + c.Unit +'('+ c.Spec+'/'+c.Unit+')'))  AS GoodName,   ");
-            strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
+            strBuilder.Append("  ( SELECT [Config2] FROM [dbo].[Config]  WHERE [Config1]='GoodImgPath')+(SELECT  UseValue FROM [dbo].[SysSetting] WHERE [UseFor]='GoodBasicPage') + '/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
             //strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/1bdaf0b0-d242-4e62-b54f-61a1b67fedf5.jpg' AS Picture ,   ");
-            strBuilder.Append("  c.Price ,   ");
+            // strBuilder.Append("  b.Picture ,   ");
+            strBuilder.Append(" CAST(c.Price AS decimal(38,2))  AS  Price,   ");
             strBuilder.Append("  d.GoodQty    ");
             strBuilder.Append("  FROM  [dbo].[GoodCategory] a   ");
             strBuilder.Append(" INNER  JOIN [dbo].[GoodBasic] b ON   ");
@@ -114,9 +107,10 @@ namespace zym_api.DAL
             strBuilder.Append(" c.ID AS ShopGoodID, ");
             strBuilder.Append("  a.Category,   ");
             strBuilder.Append("  (b.GoodName + ' | '+ ( CAST(c.Qty AS nvarchar) + c.Unit +'('+ c.Spec+'/'+c.Unit+')'))  AS GoodName,   ");
-            strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
+            //strBuilder.Append("  b.Picture ,   ");
+            strBuilder.Append(" ( SELECT [Config2] FROM [dbo].[Config]  WHERE [Config1]='GoodImgPath')+(SELECT  UseValue FROM [dbo].[SysSetting] WHERE [UseFor]='GoodBasicPage') + '/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
             //strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/1bdaf0b0-d242-4e62-b54f-61a1b67fedf5.jpg' AS Picture ,   ");
-            strBuilder.Append("  c.Price ,   ");
+            strBuilder.Append("   CAST(c.Price AS decimal(38,2))  AS  Price,   ");
             strBuilder.Append("  d.GoodQty    ");
             strBuilder.Append("  FROM  [dbo].[GoodCategory] a   ");
             strBuilder.Append(" INNER  JOIN [dbo].[GoodBasic] b ON   ");
@@ -138,7 +132,7 @@ namespace zym_api.DAL
         {
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append("SELECT   ");
-            strBuilder.Append("(SUM(c.Price* d.GoodQty)) AS  Price,    ");
+            strBuilder.Append("(SUM(CAST((c.Price* d.GoodQty) AS decimal(38,2))) ) AS  Price,    ");
             strBuilder.Append("SUM(d.GoodQty) AS GoodQty ");
             strBuilder.Append("FROM  [dbo].[GoodCategory] a    ");
             strBuilder.Append("INNER  JOIN [dbo].[GoodBasic] b ON    ");
@@ -153,7 +147,7 @@ namespace zym_api.DAL
             strBuilder.Append("a.ID =d.CategoryID  ");
             strBuilder.Append("AND  ");
             strBuilder.Append(" c.ID  = d.ShopGoodID  ");
-            strBuilder.Append(" AND   d.GoodCheck = 'True'  AND c.Flag='Y'");
+            strBuilder.Append(" AND   d.GoodCheck = 'True'  AND c.Flag='Y' ");
             return strBuilder.ToString();
         }
         public static string MinusAmount(string OpenId, string CratId)
@@ -299,9 +293,10 @@ namespace zym_api.DAL
             strBuilder.Append(" c.ID AS ShopGoodID, ");
             strBuilder.Append("  a.Category,   ");
             strBuilder.Append("  (b.GoodName + ' | '+ ( CAST(c.Qty AS nvarchar) + c.Unit +'('+ c.Spec+'/'+c.Unit+')'))  AS GoodName,   ");
-            strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
+            strBuilder.Append("  ( SELECT [Config2] FROM [dbo].[Config]  WHERE [Config1]='GoodImgPath')+(SELECT  UseValue FROM [dbo].[SysSetting] WHERE [UseFor]='GoodBasicPage') + '/' + CAST(b.ID AS nvarchar(MAX)) + '.jpg' AS Picture ,   ");
             //strBuilder.Append("  'http://49.233.191.59/ftp/GoodImg/1bdaf0b0-d242-4e62-b54f-61a1b67fedf5.jpg' AS Picture ,   ");
-            strBuilder.Append("  c.Price ,   ");
+            // strBuilder.Append("  b.Picture ,   ");
+            strBuilder.Append("CAST(c.Price AS decimal(38,2)) AS Price   ,   ");
             strBuilder.Append("  d.GoodQty    ");
             strBuilder.Append("  FROM  [dbo].[GoodCategory] a   ");
             strBuilder.Append(" INNER  JOIN [dbo].[GoodBasic] b ON   ");
@@ -323,6 +318,8 @@ namespace zym_api.DAL
         public static string InsertOrder(GoodsPay ubi)
         {
             StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append(" IF NOT EXISTS ");
+            strBuilder.Append(" (SELECT * FROM   [dbo].[Order]  WHERE  [OpenID]='" + ubi.OpenId + "' AND   [OrderNumber]='" + ubi.OrderNumber + "'  AND  [ShopGoodID]='" + ubi.ShopGoodID + "'   ) ");
             strBuilder.Append("  INSERT INTO [dbo].[Order] ");
             strBuilder.Append(" (");
             strBuilder.Append(" [OpenID]");
@@ -336,7 +333,7 @@ namespace zym_api.DAL
             strBuilder.Append(" ,[ShopGoodID]");
             strBuilder.Append("  ,[Category]");
             strBuilder.Append("  ,[GoodName]");
-            strBuilder.Append("  ,[Picture]");
+            //  strBuilder.Append("  ,[Picture]");
             strBuilder.Append("  ,[Price]");
             strBuilder.Append("  ,[GoodQty]");
             if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待发货")
@@ -344,10 +341,11 @@ namespace zym_api.DAL
                 strBuilder.Append("  ,[CreateTime]");
                 strBuilder.Append("  ,[PayTime]");
             }
-            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
-            {
-                strBuilder.Append("  ,[CreateTime]");
-            }
+            //if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
+            //{
+            //   // strBuilder.Append("  ,[CreateTime]");
+            //}
+            strBuilder.Append("  ,[CreateTime]");
             strBuilder.Append("  ,[Name]");
             strBuilder.Append("  ,[Phone]");
             strBuilder.Append("  ,[Region]");
@@ -367,7 +365,7 @@ namespace zym_api.DAL
             strBuilder.Append(" ,'" + ubi.ShopGoodID + "'");
             strBuilder.Append("  ,N'" + ubi.Category + "'");
             strBuilder.Append("  ,N'" + ubi.GoodName + "'");
-            strBuilder.Append(",'" + ubi.Picture + "'");
+            // strBuilder.Append(",'" + ubi.Picture + "'");
             strBuilder.Append(",'" + ubi.Price + "'");
             strBuilder.Append(",'" + ubi.GoodQty + "'");
             if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待发货")
@@ -375,10 +373,11 @@ namespace zym_api.DAL
                 strBuilder.Append(",GETDATE()");
                 strBuilder.Append(",GETDATE()");
             }
-            if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
-            {
-                strBuilder.Append(",GETDATE()");
-            }
+            //if (!string.IsNullOrEmpty(ubi.Status) && ubi.Status == "待付款")
+            //{
+            //    strBuilder.Append(",GETDATE()");
+            //}
+            strBuilder.Append(",GETDATE()");
             strBuilder.Append(",N'" + ubi.Name + "'");
             strBuilder.Append(",'" + ubi.Phone + "'");
             strBuilder.Append(",N'" + ubi.Region + "'");
@@ -391,7 +390,8 @@ namespace zym_api.DAL
         {
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append(" SELECT ");
-            strBuilder.Append(" a.[OpenID]");
+            strBuilder.Append(" a.[ID]");
+            strBuilder.Append(" ,a.[OpenID]");
             strBuilder.Append(" ,a.[CartID]");
             strBuilder.Append(" ,a.[OrderNumber]");
             strBuilder.Append(",a.[GoodBasicID]");
@@ -399,8 +399,9 @@ namespace zym_api.DAL
             strBuilder.Append(" ,a.[ShopGoodID]");
             strBuilder.Append(",a.[Category]");
             strBuilder.Append(",a.[GoodName]");
-            strBuilder.Append(",a.[Picture]");
-            strBuilder.Append(" ,a.[Price]");
+            //strBuilder.Append(",a.[Picture]");
+            strBuilder.Append(" ,   ( SELECT [Config2] FROM [dbo].[Config]  WHERE [Config1]='GoodImgPath')+(SELECT  UseValue FROM [dbo].[SysSetting] WHERE [UseFor]='GoodBasicPage') + '/' + CAST(a.[GoodBasicID] AS nvarchar(MAX)) + '.jpg' AS Picture  ");
+            strBuilder.Append(" ,CAST(a.[Price] AS decimal(38,2)) AS Price ");
             strBuilder.Append(" ,a.[GoodQty]");
             strBuilder.Append(" ,CONVERT(varchar, a.[CreateTime], 120) AS [CreateTime]");
             strBuilder.Append(" ,CONVERT(varchar, a.[PayTime], 120) AS [PayTime]");
@@ -413,16 +414,54 @@ namespace zym_api.DAL
             strBuilder.Append(" ,a.[Address]");
             strBuilder.Append(" ,a.[Status]");
             strBuilder.Append(" ,b.TotalPrice");
-            strBuilder.Append(" ,b.totalCount ");
+            strBuilder.Append(" ,b.TotalCount ");
+            strBuilder.Append(" ,c.TotalPriceRefund ");
             strBuilder.Append(" ,b.Count  ");
             strBuilder.Append(" ,a.[Status] ");
+            strBuilder.Append(" ,a.[ApplyPhone]");
+            strBuilder.Append(", a.[ApplyReason]");
+            strBuilder.Append(", a.[ApplyType]");
+            strBuilder.Append(" , a.[ApplyPrice]");
+            strBuilder.Append(" , a.[ApplyRemark]");
+            strBuilder.Append(" , d.[TotalApplyPrice] ");
             strBuilder.Append("FROM  [dbo].[Order] a ");
-            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber], SUM([Price] * GoodQty) AS TotalPrice");
+            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber], SUM(CAST(([Price] * GoodQty) AS decimal(38,2))) AS TotalPrice");
             strBuilder.Append("  ,SUM(CAST([GoodQty] AS int)) AS TotalCount,COUNT(*) AS Count    ");
-            strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' GROUP BY OpenID,[OrderNumber]) b ON");
-            strBuilder.Append("  a.OpenID=b.OpenID AND a.OrderNumber=b.OrderNumber");
+            strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' AND [Flag] ='Y'  ");
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "1")
+            {
+                strBuilder.Append(" AND [Status]=N'待付款'  ");
+            }
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "2")
+            {
+                strBuilder.Append(" AND ([Status]=N'待发货') ");
+            }
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "3")
+            {
+                strBuilder.Append(" AND [Status]=N'待收货'  ");
+            }
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "4")
+            {
+                strBuilder.Append(" AND [Status]=N'已完成'  ");
+            }
+            if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "5")
+            {
+                strBuilder.Append(" AND ([Status]=N'已取消' OR [Status]=N'已退款' OR [Status]=N'退款处理中'  OR [Status]=N'退款异常')  ");
+            }
+            strBuilder.Append(" GROUP BY OpenID,[OrderNumber]) b ON ");
+            strBuilder.Append("  a.OpenID=b.OpenID AND a.OrderNumber=b.OrderNumber ");
+            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber],  SUM(CAST(([Price] * GoodQty) AS decimal(38,2))) AS TotalPriceRefund");
+            strBuilder.Append("  ,SUM(CAST([GoodQty] AS int)) AS TotalCountRefund  ");
+            strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' AND [Flag] ='Y'  ");
+            strBuilder.Append(" GROUP BY OpenID,[OrderNumber]) c ON ");
+            strBuilder.Append("  a.OpenID=c.OpenID AND a.OrderNumber=c.OrderNumber  ");
+            strBuilder.Append("INNER JOIN (SELECT OpenID,[OrderNumber], SUM(CAST(ApplyPrice AS decimal(38,2)))  AS TotalApplyPrice   ");
+            strBuilder.Append("  FROM [dbo].[Order] WHERE OpenID='" + OpenId + "' AND [Flag] ='Y'  ");
+            strBuilder.Append(" GROUP BY OpenID,[OrderNumber]) d ON ");
+            strBuilder.Append("  a.OpenID=d.OpenID AND a.OrderNumber=d.OrderNumber");
             strBuilder.Append(" WHERE a.OpenID='" + OpenId + "'  ");
             strBuilder.Append(" AND  a.[CreateTime] >= DATEADD(YEAR, -1, GETDATE()) ");
+            strBuilder.Append(" AND  a.[Flag] ='Y' ");
             if (!string.IsNullOrEmpty(ID))
             {
                 strBuilder.Append(" AND a.[OrderNumber]='" + ID + "'");
@@ -445,7 +484,7 @@ namespace zym_api.DAL
             }
             if (!string.IsNullOrEmpty(menuTapCurrent) && menuTapCurrent == "5")
             {
-                strBuilder.Append(" AND (a.[Status]=N'已取消' OR a.[Status]=N'已退款')  ORDER BY    a.[CancelTime]  DESC");
+                strBuilder.Append(" AND (a.[Status]=N'已取消' OR a.[Status]=N'已退款' OR [Status]=N'退款处理中'  OR [Status]=N'退款异常')  ORDER BY   a.[CancelTime]  DESC");
             }
             return strBuilder.ToString();
         }
@@ -455,6 +494,15 @@ namespace zym_api.DAL
             strBuilder.Append("  UPDATE [dbo].[Order] SET ");
             strBuilder.Append(" [CancelTime] = GETDATE(),[Status] =N'已取消' ");
             strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
+            Helper.Log.WriteLog(strBuilder.ToString());
+            return strBuilder.ToString();
+        }
+
+        public static string GetNeedCancelOrder(string OpenId, string OrderNumber)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  SELECT  Status FROM  [dbo].[Order]  ");
+            strBuilder.Append("  WHERE  [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  AND  [Status] =N'待付款' ");
             return strBuilder.ToString();
         }
         public static string NoPayOrder(string OpenId, string OrderNumber)
@@ -470,6 +518,89 @@ namespace zym_api.DAL
             StringBuilder strBuilder = new StringBuilder();
             strBuilder.Append("  UPDATE [dbo].[Order] SET ");
             strBuilder.Append(" [CancelTime] = GETDATE(),[Status] =N'已退款' ");
+            strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
+            return strBuilder.ToString();
+        }
+
+
+        public static string NoPayOrders(string OpenId)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  SELECT  b.ID AS ShopGoodID,a.ID AS OrderID   FROM [dbo].[Order] a ");
+            strBuilder.Append("  INNER JOIN [dbo].[ShopGood] b ON ");
+            strBuilder.Append("  a.ShopGoodID = b.ID ");
+            strBuilder.Append("  WHERE b.Flag = 'N' AND a.OpenID = '" + OpenId + "' AND a.Status =N'待付款' ");
+            return strBuilder.ToString();
+        }
+
+        public static string UpdateOrderFlag(string OpenId, string ShopGoodID, string OrderID)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE  [dbo].[Order]  ");
+            strBuilder.Append("  SET Flag='N' ");
+            strBuilder.Append("  WHERE  OpenID = '" + OpenId + "' ");
+            strBuilder.Append("  AND   ShopGoodID='" + ShopGoodID + "'  ");
+            strBuilder.Append("  AND   ID='" + OrderID + "'  ");
+            strBuilder.Append("  AND   Status =N'待付款'  ");
+            return strBuilder.ToString();
+        }
+
+        public static string NoRefundOrders(string OpenId)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  SELECT Out_refund_no   FROM [dbo].[Order] a ");
+            strBuilder.Append("  WHERE  a.OpenID = '" + OpenId + "' AND (a.[Status]=N'退款处理中'  OR a.[Status]=N'退款异常'   OR a.[Status]='PROCESSING' OR a.[Status]='ABNORMAL') ");
+            return strBuilder.ToString();
+        }
+        public static string UpdateOrderStatus(string OpenId, string Out_refund_no, string Status)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE  [dbo].[Order]  ");
+            strBuilder.Append("  SET Status='" + Status + "' ");
+            strBuilder.Append("  WHERE  OpenID = '" + OpenId + "' ");
+            strBuilder.Append("  AND   Out_refund_no='" + Out_refund_no + "'  ");
+            return strBuilder.ToString();
+        }
+
+        public static string ApplyRefund(string OpenId, string ID, string Phone, string Reason, string Type, string Price, string Remark)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE  [dbo].[Order]  ");
+            strBuilder.Append("  SET ApplyPhone=N'" + Phone + "' ");
+            strBuilder.Append("  , ApplyReason=N'" + Reason + "' ");
+            strBuilder.Append("  , ApplyType=N'" + Type + "' ");
+            strBuilder.Append("  , ApplyPrice=N'" + Price + "' ");
+            strBuilder.Append("  , ApplyRemark=N'" + Remark + "' ");
+            strBuilder.Append("  WHERE  OpenID = '" + OpenId + "' ");
+            strBuilder.Append("  AND   ID='" + ID + "'  ");
+            return strBuilder.ToString();
+        }
+
+        //public static string NoPayOrderCancel(string OpenId, string OrderNumber)
+        //{
+        //    StringBuilder strBuilder = new StringBuilder();
+        //    strBuilder.Append("  UPDATE [dbo].[Order] SET ");
+        //    strBuilder.Append(" [PayTime] = GETDATE(),[Status] =N'待付款' ");
+        //    strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "' AND ([Status] IS NULL OR [Status]='') ");
+        //    return strBuilder.ToString();
+        //}
+        public static string NoPayOrderStatus(string OpenId, string OrderNumber, string Status)
+        {
+            StringBuilder strBuilder = new StringBuilder();
+            strBuilder.Append("  UPDATE [dbo].[Order] SET ");
+            //  strBuilder.Append("  [Status] =N'"+ Status + "',  [PayTime] = GETDATE() ");
+            if (Status == "待发货")
+            {
+                strBuilder.Append("  [Status] =N'" + Status + "',  [PayTime] = GETDATE() ");
+            }
+            if (Status == "待付款")
+            {
+                strBuilder.Append("  [Status] =N'" + Status + "'  ");
+            }
+            if (Status == "已取消")
+            {
+                strBuilder.Append("  [Status] =N'" + Status + "',  [CancelTime] = GETDATE() ");
+            }
             strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
             return strBuilder.ToString();
         }

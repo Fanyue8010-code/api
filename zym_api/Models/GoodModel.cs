@@ -16,7 +16,7 @@ namespace zym_api.Models
             public string Category { get; set; }
             public string GoodName { get; set; }
             public string Picture { get; set; }
-            public string Price { get; set; }
+            public decimal Price { get; set; }
             public string GoodQty { get; set; }
             public string CartID { get; set; }
         }
@@ -31,7 +31,7 @@ namespace zym_api.Models
             public string Category { get; set; }
             public string GoodName { get; set; }
             public string Picture { get; set; }
-            public string Price { get; set; }
+            public decimal Price { get; set; }
             public string GoodQty { get; set; }
         }
         public class CartGoodSum
@@ -61,7 +61,7 @@ namespace zym_api.Models
             public string Category { get; set; }
             public string GoodName { get; set; }
             public string Picture { get; set; }
-            public string Price { get; set; }
+            public decimal Price { get; set; }
             public string GoodQty { get; set; }
             public string CreateTime { get; set; }
             public string PayTime { get; set; }
