@@ -48,7 +48,6 @@ namespace zym_api.Controllers
             {
                 return dt.Rows[0]["Config2"].ToString();
             }
-            string df = dt.Rows[0]["Config2"].ToString();
            
             return null; // 或抛出异常，视具体需求而定
         }

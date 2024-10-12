@@ -98,10 +98,17 @@ namespace zym_api.DAL
             return strBuilder.ToString();
         }
 
-        public static string GetOrderStatus()
+        public static string GetOrderStatus(string OpenId)
         {
             StringBuilder strBuilder = new StringBuilder();
-            strBuilder.Append("  SELECT  OpenID,OrderNumber  FROM [dbo].[Order] WHERE (OrderNumber != '' AND  OrderNumber IS NOT NULL) AND (Status IS NULL OR Status = '')  OR    (PayTime IS NULL OR PayTime = '') AND Status='待付款'  AND  OrderNumber<> ''");
+            strBuilder.Append("  SELECT  OpenID,OrderNumber  FROM [dbo].[Order] WHERE (OrderNumber != '' AND  OrderNumber IS NOT NULL) AND (Status IS NULL OR Status = '')  ");
+            if (!string.IsNullOrEmpty(OpenId) && OpenId != "undefined")
+            {
+                strBuilder.Append(" OR    (PayTime IS NULL OR PayTime = '') AND Status='待付款'  AND  OrderNumber<> '' ");
+
+                strBuilder.Append(" AND   [OpenID]='" + OpenId + "' ");
+            }
+
             return strBuilder.ToString();
         }
     }

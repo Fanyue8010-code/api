@@ -481,19 +481,18 @@ namespace zym_api.Controllers
             }
         }
         [HttpGet]
-        public async Task<object> GetOrderPayStatus()
+        public async Task<object> GetOrderPayStatus(string OpenId = "")
         {
             try
             {
                 string OrderNumber = "";
-                string OpenId = "";
                 string result = "";
                 string MchId = GetMchId();
                 string SerialNo = GetSerialNo();
                 string appid = GetAppId();
                 string method = "GET";
                 //获取订单状态为空，来单独调用查看订单状态，来更新订单
-                using (DataTable dt = SQLHelper.ExecuteDataTable(PayDAL.GetOrderStatus()))
+                using (DataTable dt = SQLHelper.ExecuteDataTable(PayDAL.GetOrderStatus(OpenId)))
                 {
                     foreach (DataRow dr in dt.Rows)
                     {
