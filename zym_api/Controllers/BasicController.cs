@@ -49,37 +49,40 @@ namespace zym_api.Controllers
             return msg;
         }
 
-        [HttpGet]
-        public HttpResponseMessage SaveGoodBasic(
-            string Action,
-            string ID,
-            string CategoryID,
-            string Name,
-            string SubPackQty,
-            string SubPackBarcode,
-            string HasSubPack,
-            string SubPackUnit,
-            string Unit,
-            string Barcode,
-            string Picture
+        [HttpPost]
+        public HttpResponseMessage SaveGoodBasic(JObject json
+            //string Action,
+            //string ID,
+            //string CategoryID,
+            //string Name,
+            //string SubPackQty,
+            //string SubPackBarcode,
+            //string HasSubPack,
+            //string SubPackUnit,
+            //string Unit,
+            //string Barcode,
+            //string Picture
             )
         {
+            var jsonStr = JsonConvert.SerializeObject(json);
+            var jsonPara = JsonConvert.DeserializeObject<dynamic>(jsonStr);
+
             GoodBasic entity = new GoodBasic();
-            entity.Action = Action;
-            if (!string.IsNullOrEmpty(ID))
+            entity.Action = jsonPara.Action.ToString();
+            if (!string.IsNullOrEmpty(jsonPara.ID.ToString()))
             {
-                entity.GoodID = ID;
+                entity.GoodID = jsonPara.ID.ToString();
             }
             entity.ID = Guid.NewGuid();
-            entity.CategoryID = CategoryID;
-            entity.Name = Name;
-            entity.SubPackQty =SubPackQty;
-            entity.SubPackBarcode = SubPackBarcode;
-            entity.HasSubPack = HasSubPack == "false" ? "N" : "Y";
-            entity.SubPackUnit = SubPackUnit;
-            entity.Unit = Unit;
-            entity.Barcode = Barcode;
-            entity.Picture = Picture;
+            entity.CategoryID = jsonPara.CategoryID.ToString();
+            entity.Name = jsonPara.Name.ToString();
+            entity.SubPackQty = jsonPara.SubPackQty.ToString();
+            entity.SubPackBarcode = jsonPara.SubPackBarcode.ToString();
+            entity.HasSubPack = jsonPara.HasSubPack.ToString().ToUpper() == "FALSE" ? "N" : "Y";
+            entity.SubPackUnit = jsonPara.SubPackUnit.ToString();
+            entity.Unit = jsonPara.Unit.ToString();
+            entity.Barcode = jsonPara.Barcode.ToString();
+            entity.Picture = jsonPara.Picture.ToString();
             string strJson = "";
             try
             {
@@ -87,10 +90,9 @@ namespace zym_api.Controllers
             }
             catch (Exception ex)
             {
-                strJson = ex.Message;
+                return ControllerFeedback.ExJson(ex);
             }
-            HttpResponseMessage msg = new HttpResponseMessage { Content = new StringContent(strJson, Encoding.GetEncoding("UTF-8"), "application/json") };
-            return msg;
+            return ControllerFeedback.OKJson(strJson);
         }
 
         public HttpResponseMessage GetGood(string category, string goodName, string barcode, string subBarcode)

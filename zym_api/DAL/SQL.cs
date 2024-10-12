@@ -82,8 +82,30 @@ namespace zym_api.DAL
                 strBuilder.Append("'" + entity.SubPackBarcode + "',");
                 strBuilder.Append("'" + entity.SubPackQty + "',");
             }
-            strBuilder.Append("'" + entity.Picture + "'");
+            if (!string.IsNullOrEmpty(entity.Picture))
+            {
+                strBuilder.Append("'查看'");
+            }
+            else
+            {
+                strBuilder.Append("''");
+            }
             strBuilder.Append(")");
+            return strBuilder.ToString();
+        }
+
+        public static string IsExistGood(string barcode)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT GoodName FROM GoodBasic ");
+            strBuilder.Append("WHERE FLAG = 'T' AND PackBarcode = '" + barcode + "'");
+            return strBuilder.ToString();
+        }
+        public static string IsExistGoodSubBarcode(string subBarcode)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT GoodName FROM GoodBasic ");
+            strBuilder.Append("WHERE FLAG = 'T' AND SubPackBarcode = '" + subBarcode + "'");
             return strBuilder.ToString();
         }
 
@@ -108,7 +130,14 @@ namespace zym_api.DAL
                 strBuilder.Append(",[SubPackBarcode] = '" + entity.SubPackBarcode + "' ");
                 strBuilder.Append(",[SubPackQty] = '" + entity.SubPackQty + "' ");
             }
-            strBuilder.Append(",[Picture] = '"+entity.Picture+"' ");
+            if (!string.IsNullOrEmpty(entity.Picture))
+            {
+                strBuilder.Append(",[Picture] = '查看' ");
+            }
+            else
+            {
+                strBuilder.Append(",[Picture] = '' ");
+            }
             strBuilder.Append("WHERE ID = '"+entity.GoodID+"' ");
             return strBuilder.ToString();
         }

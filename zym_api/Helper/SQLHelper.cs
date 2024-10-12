@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.IO;
+using System.Reflection;
 
 namespace zym_api.Helper
 {
@@ -11,9 +13,25 @@ namespace zym_api.Helper
     {
         /// <summary>
         /// 连接字符串
-        /// </summary>
-        private static string strconn = @"server="+DBHelper.Server()+";dataBase="+DBHelper.DB()+";uid="+DBHelper.ID()+";pwd=" + DBHelper.Conn();
+        /// </summary>        
+        private static string strconn = @"server="+DBHelper.Server()+";dataBase="+DB()+";uid="+DBHelper.ID()+";pwd=" + DBHelper.Conn();
 
+
+        public static string DB()
+        {
+            string str = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Log.WriteLog(str);
+            if (str.ToUpper().Contains("API_TEST"))
+            {
+                Log.WriteLog(DBHelper.DB_Test());
+                return DBHelper.DB_Test();
+            }
+            else
+            {
+                Log.WriteLog(DBHelper.DB());
+                return DBHelper.DB();
+            }
+        }
 
         //public SQLHelper(string conn)
         //{

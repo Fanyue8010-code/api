@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Web;
 using System.Web.SessionState;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using zym_api.DAL;
 using zym_api.Helper;
 using zym_api.Models;
+using System.Drawing;
 
 namespace zym_api.BLL
 {
@@ -49,12 +50,39 @@ namespace zym_api.BLL
 
         public static string SaveGoodBasic(GoodBasic entity)
         {
-            if(!string.IsNullOrEmpty(entity.Picture))
-            {
-                entity.Picture = "查看";
-            }
+            //if(!string.IsNullOrEmpty(entity.Picture))
+            //{
+            //    entity.Picture = "查看";
+            //}
             int i = 0;
             string strID = "";
+            //查看商品条码是否已经存在
+            DataTable dtBarCode = SQLHelper.ExecuteDataTable(SQL.IsExistGood(entity.Barcode));
+            if(entity.Action == "A" && dtBarCode.Rows.Count > 0)
+            {
+                throw new Exception("商品条码已经存在于大包装。商品名：" + dtBarCode.Rows[0][0].ToString());
+            }
+            DataTable dtSubBarCode = SQLHelper.ExecuteDataTable(SQL.IsExistGoodSubBarcode(entity.Barcode));
+            if (entity.Action == "A" && dtBarCode.Rows.Count > 0)
+            {
+                throw new Exception("商品条码已经存在于小包装。商品名：" + dtSubBarCode.Rows[0][0].ToString());
+            }
+
+            //有小包装
+            if(entity.Action == "A" && entity.HasSubPack != "N")
+            {
+                dtBarCode = SQLHelper.ExecuteDataTable(SQL.IsExistGood(entity.SubPackBarcode));
+                if (dtBarCode.Rows.Count > 0)
+                {
+                    throw new Exception("小商品条码已经存在于大包装。商品名：" + dtBarCode.Rows[0][0].ToString());
+                }
+                dtSubBarCode = SQLHelper.ExecuteDataTable(SQL.IsExistGoodSubBarcode(entity.SubPackBarcode));
+                if (dtBarCode.Rows.Count > 0)
+                {
+                    throw new Exception("小商品条码已经存在于小包装。商品名：" + dtSubBarCode.Rows[0][0].ToString());
+                }
+            }
+
             if (entity.Action == "A")
             {
                 i = SQLHelper.ExecuteNonQuery(SQL.SaveGoodBasic(entity));
@@ -64,6 +92,20 @@ namespace zym_api.BLL
             {
                 i = SQLHelper.ExecuteNonQuery(SQL.ChgGoodBasic(entity));
                 strID = entity.GoodID.ToString();
+            }
+            if (!string.IsNullOrEmpty(entity.Picture))
+            {
+                byte[] imageBytes = Convert.FromBase64String(entity.Picture.Split(',')[1]);
+                System.IO.File.WriteAllBytes("C:\\inetpub\\wwwroot\\ftp\\GoodImg\\" + strID + ".jpg", imageBytes);
+                //using (var ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+                //{
+                //    // 从内存流创建Image
+                //    using (Image image = Image.FromStream(ms))
+                //    {
+                //        // 保存图片到指定路径
+                //        image.Save("C:\\inetpub\\wwwroot\\ftp\\GoodImg\\" + strID + ".jpg");
+                //    }
+                //}
             }
             return strID;
         }
@@ -94,12 +136,13 @@ namespace zym_api.BLL
                 string strPath = "";
                 if (string.IsNullOrEmpty(strPicture))
                 {
-                    strPath = "";
+                    strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/default.jpg";
                 }
                 else
                 {
                     string strGoodID = dt.Rows[i]["ID"].ToString();
                     strPath = "https://" + strIP + "/Attach/" + dtPath.Rows[0][0].ToString() + "/" + strGoodID + ".jpg";
+                    Log.WriteLog(strPath);
                 }
                 dt.Rows[i]["Picture"] = strPath;
             }
