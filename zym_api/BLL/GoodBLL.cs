@@ -467,7 +467,7 @@ namespace zym_api.BLL
                         ub.Address = Address;
                         ub.Status = Status;
                         int insert = SQLHelper.ExecuteNonQuery(GoodDAL.InsertOrder(ub));
-                        if (ub.Status == "待发货")
+                        if (ub.Status == "待发货" || ub.Status == "")
                         {
                             int Del = SQLHelper.ExecuteNonQuery(GoodDAL.DeleteCart(OpenId, ub.CartID));
                         }
