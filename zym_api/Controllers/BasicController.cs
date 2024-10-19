@@ -613,5 +613,35 @@ namespace zym_api.Controllers
             }
             return ControllerFeedback.OKJson(strJson);
         }
+
+        [HttpGet]
+        public HttpResponseMessage GetGoodBySubBar(string barcode)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.GetGoodBySubBar(barcode));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ChgGoodBySubBar(string barcode, string goodName, string unit, string subUnit, string subQty, string id)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(BasicBLL.ChgGoodBySubBar(barcode, goodName, unit, subUnit, subQty, id));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
     }
 }
