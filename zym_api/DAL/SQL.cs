@@ -607,7 +607,10 @@ namespace zym_api.DAL
             strBuilder.Append("SELECT g.*, b.GoodName, b.Picture, (g.ExpDate + ' ' + g.ExpUnit) as Exp, CASE WHEN g.FLAG = 'Y' THEN '售卖中' ELSE '停止售卖' END AS STATUS FROM ShopGood g ");
             strBuilder.Append("left join GoodBasic b ");
             strBuilder.Append("on g.GoodID = b.id ");
-            strBuilder.Append("where GoodID = '"+id+"' ");
+            if (!string.IsNullOrEmpty(id))
+            {
+                strBuilder.Append("where GoodID = '" + id + "' ");
+            }
             return strBuilder.ToString();
         }
 
@@ -674,6 +677,27 @@ namespace zym_api.DAL
         {
             strBuilder = new StringBuilder();
             strBuilder.Append("UPDATE SYSUSER SET PSD = '"+psd+"' WHERE USERNAME = '"+id+"'");
+            return strBuilder.ToString();
+        }
+
+        public static string GetGoodBySubBar(string barcode)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT * FROM GoodBasic ");
+            strBuilder.Append("WHERE SubPackBarcode = '"+barcode.Trim()+"'");
+            return strBuilder.ToString();
+        }
+
+        public static string ChgGoodBySubBar(string barcode, string goodName, string unit, string subUnit, string subQty, string id)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE GoodBasic ");
+            strBuilder.Append("SET PACKBARCODE = '" + barcode.Trim() + "', ");
+            strBuilder.Append(" goodName = '" + goodName.Trim() + "', ");
+            strBuilder.Append(" PACKUNIT = '" + unit.Trim() + "', ");
+            strBuilder.Append(" SUBPACKUNIT = '" + subUnit.Trim() + "', ");
+            strBuilder.Append(" SUBPACKQTY = '" + subQty.Trim() + "' ");
+            strBuilder.Append("WHERE ID  = '" + id + "' ");
             return strBuilder.ToString();
         }
     }

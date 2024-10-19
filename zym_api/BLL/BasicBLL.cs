@@ -817,5 +817,14 @@ namespace zym_api.BLL
             string strNew = Helper.Helper.Base64(newPsd);
             return SQLHelper.ExecuteNonQuery(SQL.ChgPsd(id, strNew));
         }
+        public static DataTable GetGoodBySubBar(string barcode)
+        {
+            DataTable dt = SQLHelper.ExecuteDataTable(SQL.GetGoodBySubBar(barcode));
+            return dt;
+        }
+        public static int ChgGoodBySubBar(string barcode, string goodName, string unit, string subUnit, string subQty, string id)
+        {
+            return SQLHelper.ExecuteNonQuery(SQL.ChgGoodBySubBar(barcode, goodName, unit, subUnit, subQty, id));
+        }
     }
 }
