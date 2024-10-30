@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
+using zym_api.Controllers;
 using zym_api.DAL;
 using zym_api.Helper;
 using zym_api.Models;
@@ -65,6 +68,22 @@ namespace zym_api.BLL
                 errMsg = ex.Message;
                 return errMsg;
             }
+        }
+
+        public static string GetToken()
+        {
+            LoginController login = new LoginController();
+
+            string strAppid = login.GetAppId();
+            string strSecret = login.GetSecret();
+            StringBuilder strApiUrl = new StringBuilder();
+            strApiUrl.Append(ConfigurationManager.AppSettings["ApiBaseURL"].ToString());
+            strApiUrl.Append("cgi-bin/token?grant_type=client_credential&");
+            strApiUrl.Append("appid=" + strAppid);
+            strApiUrl.Append("&");
+            strApiUrl.Append("secret=" + strSecret);
+            var respJson = JsonHelper.GetJsonDataFromUrl(strApiUrl.ToString());
+            return respJson.access_token;
         }
     }
 }

@@ -245,6 +245,7 @@
     <Compile Include="Models\BasicModel.cs" />
     <Compile Include="Models\GoodModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\Order.cs" />
     <Compile Include="Models\QueryReturnModel.cs" />
     <Compile Include="Models\Req.cs" />
     <Compile Include="Models\Refund.cs" />

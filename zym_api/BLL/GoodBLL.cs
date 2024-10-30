@@ -16,6 +16,10 @@ using System.Drawing;
 using System.Net;
 using System.Configuration;
 using zym_api.Controllers;
+using System.Text.Json.Nodes;
+using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Utilities;
+using System.Web.SessionState;
 
 namespace zym_api.BLL
 {
@@ -759,5 +763,136 @@ namespace zym_api.BLL
         //        return errMsg;
         //    }
         //}
+
+        public static DataTable GetOrderList(string orderNo, string status, string prepare, string start, string end)
+        {
+            DateTime dtStart = new DateTime();
+            DateTime dtEnd = new DateTime();
+
+            if (!string.IsNullOrEmpty(start) && !string.IsNullOrEmpty(end))
+            {
+                try
+                {
+                    dtStart = Convert.ToDateTime(start);
+                    if (dtStart.Year == 1)
+                    {
+                        throw new Exception("开始时间选择错误");
+                    }
+                }
+                catch
+                {
+                    throw new Exception("开始时间选择错误");
+                }
+                try
+                {
+                    dtEnd = Convert.ToDateTime(end);
+                    if (dtEnd.Year == 1)
+                    {
+                        throw new Exception("结束时间选择错误");
+                    }
+                }
+                catch
+                {
+                    throw new Exception("结束时间选择错误");
+                }
+            }
+
+            DataTable dtOrder = SQLHelper.ExecuteDataTable(GoodDAL.GetOrder(orderNo, status, prepare, start, end));
+            if(dtOrder.Rows.Count == 0)
+            {
+                throw new Exception("没有查询到信息");
+            }
+            return dtOrder;
+
+            #region 通过Api获取的资料
+            /*
+            DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            DateTime dateToConvert = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, dtStart.Hour, dtStart.Minute, dtStart.Second, DateTimeKind.Utc);
+            TimeSpan timeStart = dateToConvert.ToUniversalTime() - epoch;
+            dateToConvert = new DateTime(dtStart.Year, dtStart.Month, dtStart.Day, 23, 59, 59, DateTimeKind.Utc);
+            TimeSpan timeEnd = dateToConvert.ToUniversalTime() - epoch;
+
+            string strApiUrl = ConfigurationManager.AppSettings["ApiBaseURL"].ToString();
+            strApiUrl += "wxa/sec/order/get_order_list?access_token=" + LoginBLL.GetToken();
+            OrderList order = new OrderList();
+            order.pay_time_range.begin_time = (long)timeStart.TotalSeconds;
+            order.pay_time_range.end_time = (long)timeEnd.TotalSeconds;
+            order.order_state = 2;
+            order.page_size = 2;
+            var resp = JsonHelper.Post(strApiUrl,JsonConvert.SerializeObject(order));
+            JArray array = JArray.Parse(resp.order_list.ToString());
+            OrderResponse respList = new OrderResponse();
+            foreach (JObject item in array)
+            {
+                foreach (JProperty jProperty in item.Properties())
+                {
+                    if(jProperty.Name.ToString() == "transaction_id")
+                    {
+                        respList.PaySerialNo = jProperty.Value.ToString();
+                    }
+                    else if (jProperty.Name.ToString() == "merchant_trade_no")
+                    {
+                        respList.ShopSerialNo = jProperty.Value.ToString();
+                    }
+                    else if (jProperty.Name.ToString() == "description")
+                    {
+                        respList.ShopSerialNo = jProperty.Value.ToString();
+                    }
+                }
+            }
+
+            List<DesOrderList> items = JsonConvert.DeserializeObject<List<DesOrderList>>(resp.order_list);
+            return null;
+            */
+            #endregion
+        }
+
+        public static int ChgPrepare(string orderNo, string id)
+        {
+            return SQLHelper.ExecuteNonQuery(GoodDAL.ChgPrepare(orderNo, id));
+        }
+
+        public static DeliveryFee GetFee()
+        {
+            DataTable dt = SQLHelper.ExecuteDataTable(GoodDAL.GetFee());
+            DeliveryFee entity = new DeliveryFee();
+            try
+            {
+                entity.Fee = dt.Select("free = 'DeliveryFee'")[0]["fee"].ToString();
+                entity.Free = dt.Select("free = 'FreeDeliveryFee'")[0]["fee"].ToString();
+            }
+            catch
+            {
+
+            }
+            return entity;
+        }
+
+        public static int ChgFee(string fee, string free)
+        {
+            return SQLHelper.ExecuteNonQuery(GoodDAL.ChgFee(fee, free));
+        }
+
+        public static void GetOrderStatus(string strTransId)
+        {
+            string strApiUrl = ConfigurationManager.AppSettings["ApiBaseURL"].ToString();
+            strApiUrl += "wxa/sec/order/get_order?access_token=" + LoginBLL.GetToken();
+
+            OrderByTransId entity = new OrderByTransId();
+            entity.transaction_id = strTransId;
+            var resp = JsonHelper.Post(strApiUrl, JsonConvert.SerializeObject(entity));
+            var obj = JObject.Parse(resp.order.ToString());
+            if (obj.order_state.ToString() != "1")
+            {
+                string strStatus = Helper.Helper.OrderStatus(obj.order_state.ToString());
+                throw new Exception(strTransId + strStatus);
+            }
+        }
+
+        public static void Shipping(string strTransId)
+        {
+
+        }
     }
 }

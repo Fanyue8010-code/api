@@ -73,5 +73,11 @@ namespace zym_api.Models
             public string Address { get; set; }
             public string Status { get; set; }
         }
+
+        public class DeliveryFee
+        {
+            public string Fee { get; set; } = "0";
+            public string Free { get; set; } = "0";
+        }
     }
 }

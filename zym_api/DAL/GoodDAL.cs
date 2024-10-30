@@ -604,5 +604,67 @@ namespace zym_api.DAL
             strBuilder.Append("  WHERE [OpenID] = '" + OpenId + "' AND [OrderNumber] =  '" + OrderNumber + "'  ");
             return strBuilder.ToString();
         }
+
+        public static string GetOrder(string OrderNo, string Status, string Prepare, string Start, string End)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT ");
+            strBuilder.Append("O.ID, ");
+            strBuilder.Append("O.Transaction_id AS OrderNumber, ");
+            strBuilder.Append("O.Category, ");
+            strBuilder.Append("B.GoodName, ");
+            strBuilder.Append("O.Price, ");
+            strBuilder.Append("O.GoodQty, ");
+            strBuilder.Append("CONVERT(VARCHAR,O.PayTime,120) AS PayTime, ");
+            strBuilder.Append("O.Address + '-' + O.Name + '(' + O.Phone + ')' AS Payer, ");
+            strBuilder.Append("O.Status, ");
+            strBuilder.Append("O.Prepare, ");
+            strBuilder.Append("O.OpenID ");
+            strBuilder.Append("FROM [Order] O ");
+            strBuilder.Append("LEFT JOIN GoodBasic B ");
+            strBuilder.Append("ON O.GoodBasicID = B.ID ");
+            strBuilder.Append("WHERE 1 = 1  ");
+            if(!string.IsNullOrEmpty(Start) && !string.IsNullOrEmpty(End))
+            {
+                strBuilder.Append("AND CreateTime BETWEEN '"+ Start + "' AND '"+ End + " 23:59:59' ");
+            }
+            if (!string.IsNullOrEmpty(Status))
+            {
+                strBuilder.Append("AND STATUS = '" + Status + "' ");
+            }
+            if (!string.IsNullOrEmpty(OrderNo))
+            {
+                strBuilder.Append("AND Transaction_id = '" + OrderNo.ToUpper()+"' ");
+            }
+            if(!string.IsNullOrEmpty(Prepare) &&  Prepare != "全部")
+            {
+                strBuilder.Append("AND PREPARE = '"+ (Prepare == "已拣货" ? "Y" : "N") +"' ");
+            }
+            return strBuilder.ToString();
+        }
+
+        public static string ChgPrepare(string orderNo, string id)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE [ORDER] SET PREPARE = 'Y' ");
+            strBuilder.Append("WHERE Transaction_id = '" + orderNo+ "' AND ID = '" + id+"'");
+            return strBuilder.ToString();
+        }
+
+        public static string GetFee()
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("select Config3 as fee, Config4 as free  from Config ");
+            strBuilder.Append("where Config4 = 'DeliveryFee' or Config4 = 'FreeDeliveryFee' ");
+            return strBuilder.ToString();
+        }
+
+        public static string ChgFee(string fee, string free)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE Config Set config3 = '" + fee + "' where Config4 = 'DeliveryFee';"); 
+            strBuilder.Append("UPDATE Config Set config3 = '" + free + "' where Config4 = 'FreeDeliveryFee';");
+            return strBuilder.ToString();
+        }
     }
 }

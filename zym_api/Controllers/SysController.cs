@@ -12,12 +12,35 @@ using JWT.Serializers;
 using Newtonsoft.Json;
 using zym_api.BLL;
 using zym_api.Helper;
+using zym_api.Models;
 using static zym_api.Helper.Helper;
 
 namespace zym_api.Controllers
 {
     public class SysController : ApiController
     {
+        [HttpGet]
+        public HttpResponseMessage GetOrder()
+        {
+            string strJson = "";
+            try
+            {
+                OrderList order = new OrderList();
+                order.pay_time_range.begin_time = 1729950058;
+                order.pay_time_range.end_time = 1729970658;
+                order.order_state = 2;
+                order.page_size = 2;
+                var j = JsonHelper.Post("https://api.weixin.qq.com/wxa/sec/order/get_order_list?access_token=85_m-GjfsDNDHb7aajVy7J2V0CKFJhdbqzg7Tmv6wb9Hv4di_Bl6AtLIs2If4UC86MIiJs2mp8fAq9bVnjGcxoumGYflEFQGK51tyk7KcftiTJ_cNKL7TgxCuPYs-YMLSbAJAYXE",
+                    JsonConvert.SerializeObject(order));
+                strJson = JsonConvert.SerializeObject(j);
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
         // GET: Sys
         [HttpGet]
         public string GetToken()

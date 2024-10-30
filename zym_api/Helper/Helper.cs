@@ -23,5 +23,30 @@ namespace zym_api.Helper
             string data = System.Text.Encoding.UTF8.GetString(bytes);
             return data;
         }
+
+        public static string OrderStatus(string status)
+        {
+            if (status == "1")
+            {
+                return "待发货";
+            }
+            else if (status == "2")
+            {
+                return "已发货";
+            }
+            else if (status == "3")
+            {
+                return "确认收货";
+            }
+            else if (status == "4")
+            {
+                return "交易完成";
+            }
+            else if (status == "5")
+            {
+                return "已退款";
+            }
+            return "";
+        }
     }
 }

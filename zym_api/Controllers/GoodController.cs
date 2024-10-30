@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Org.BouncyCastle.Utilities;
 using System.Text.Json;
 using zym_api.DAL;
+using Org.BouncyCastle.Asn1;
 
 namespace zym_api.Controllers
 {
@@ -580,6 +581,97 @@ namespace zym_api.Controllers
             {
                 return DoErrorReturn(ex.Message);
             }
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetOrderList(string orderNo, string status, string prepare, string start, string end)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(GoodBLL.GetOrderList(orderNo, status, prepare, start, end));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ChgPrepare(string orderNo, string id)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(GoodBLL.ChgPrepare(orderNo, id));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage GetFee()
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(GoodBLL.GetFee());
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ChgFee(string fee, string free)
+        {
+            string strJson = "";
+            try
+            {
+                strJson = JsonConvert.SerializeObject(GoodBLL.ChgFee(fee, free));
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Shipping(JObject json)
+        {
+            string strJson = "";
+            try
+            {
+                var jsonStr = JsonConvert.SerializeObject(json);
+                var jsonPara = JsonConvert.DeserializeObject<dynamic>(jsonStr);
+                JArray arrOrder = jsonPara.OrderNumber;
+                //先通过api查询订单是否发货
+                foreach (var obj in arrOrder)
+                {
+                    string strOrder = obj.ToString();
+                    GoodBLL.GetOrderStatus(strOrder);
+                }
+                //没问题，发货
+                foreach (var obj in arrOrder)
+                {
+                    string strOrder = obj.ToString();
+                    GoodBLL.GetOrderStatus(strOrder);
+                }
+
+                //strJson = JsonConvert.SerializeObject(jsonObj);
+            }
+            catch (Exception ex)
+            {
+                return ControllerFeedback.ExJson(ex);
+            }
+            return ControllerFeedback.OKJson(strJson);
         }
     }
 }

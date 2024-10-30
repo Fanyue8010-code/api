@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace zym_api.Helper
@@ -40,6 +42,24 @@ namespace zym_api.Helper
             {
                 return ex.Message;
             }
+        }
+
+        public static dynamic Post(string url, string json)
+        {
+            string strUrl = url;
+            string strPostJson = json;
+            var request  = (HttpWebRequest) WebRequest.Create(strUrl);
+            request.Method = "POST";
+            request.ContentType= "application/json;charset=UTF-8";
+            byte[] byteData = Encoding.UTF8.GetBytes(strPostJson);
+            int length = byteData.Length;
+            request.ContentLength = length;
+            Stream stream = request.GetRequestStream();
+            stream.Write(byteData, 0, length);
+            stream.Close();
+            var response = (HttpWebResponse)request.GetResponse();
+            var respString = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("UTF-8")).ReadToEnd();
+            return JsonConvert.DeserializeObject(respString);
         }
     }
 }
