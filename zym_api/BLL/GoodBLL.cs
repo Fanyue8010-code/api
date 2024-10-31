@@ -916,7 +916,7 @@ namespace zym_api.BLL
                 var resp = JsonHelper.Post(strApiUrl, JsonConvert.SerializeObject(entity));
                 if(resp.errcode.ToString() == "0" && resp.errmsg.ToString() == "ok")
                 {
-                    SQLHelper.ExecuteNonQuery(GoodDAL.ChgShipStatus(strTransId, "已发货"));
+                    SQLHelper.ExecuteNonQuery(GoodDAL.ChgShipStatus(strTransId, "待收货"));
                 }
                 else
                 {
