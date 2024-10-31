@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using System.Web.UI;
 using static zym_api.Models.GoodModel;
 
 namespace zym_api.DAL
@@ -664,6 +666,24 @@ namespace zym_api.DAL
             strBuilder = new StringBuilder();
             strBuilder.Append("UPDATE Config Set config3 = '" + fee + "' where Config4 = 'DeliveryFee';"); 
             strBuilder.Append("UPDATE Config Set config3 = '" + free + "' where Config4 = 'FreeDeliveryFee';");
+            return strBuilder.ToString();
+        }
+
+        public static string GetOrderByTransId(string transId)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("SELECT OpenID, GoodName, GoodQty FROM [Order] ");
+            strBuilder.Append("WHERE Transaction_id = '"+ transId + "' ");
+            strBuilder.Append("AND STATUS = '待发货' ");
+            return strBuilder.ToString();
+        }
+
+        public static string ChgShipStatus(string transId, string status)
+        {
+            strBuilder = new StringBuilder();
+            strBuilder.Append("UPDATE [Order] SET Status = '"+status+ "', ShippingTime = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"' ");
+            strBuilder.Append("WHERE Transaction_id = '" + transId + "' ");
+            strBuilder.Append("AND STATUS = '待发货' ");
             return strBuilder.ToString();
         }
     }

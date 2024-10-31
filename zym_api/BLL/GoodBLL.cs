@@ -892,7 +892,37 @@ namespace zym_api.BLL
 
         public static void Shipping(string strTransId)
         {
+            ShipPost entity = new ShipPost();
+            DataTable dtOrder = SQLHelper.ExecuteDataTable(GoodDAL.GetOrderByTransId(strTransId));
+            if(dtOrder.Rows.Count > 0)
+            {
+                string strName = dtOrder.Rows[0]["GoodName"].ToString();
+                string strQty = dtOrder.Rows[0]["GoodQty"].ToString();
+                ShipList list = new ShipList();
+                list.item_desc = strName + "等";
+                entity.shipping_list.Add(list);
 
+                string strOpenId = dtOrder.Rows[0]["OpenID"].ToString();
+                ShipOrderKey orderKey = new ShipOrderKey();
+                orderKey.transaction_id = strTransId;
+                entity.order_key = orderKey;
+
+                Payer payer = new Payer();
+                payer.openid = strOpenId;
+                entity.payer = payer;
+
+                string strApiUrl = ConfigurationManager.AppSettings["ApiBaseURL"].ToString();
+                strApiUrl += "wxa/sec/order/upload_shipping_info?access_token=" + LoginBLL.GetToken();
+                var resp = JsonHelper.Post(strApiUrl, JsonConvert.SerializeObject(entity));
+                if(resp.errcode.ToString() == "0" && resp.errmsg.ToString() == "ok")
+                {
+                    SQLHelper.ExecuteNonQuery(GoodDAL.ChgShipStatus(strTransId, "已发货"));
+                }
+                else
+                {
+                    throw new Exception(resp.errmsg.ToString());
+                }
+            }
         }
     }
 }

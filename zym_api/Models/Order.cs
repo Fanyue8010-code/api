@@ -60,4 +60,31 @@ namespace zym_api.Models
     {
         public string transaction_id { get; set; }
     }
+
+    public class ShipPost
+    {
+        public ShipOrderKey order_key { get; set; }
+        public int delivery_mode { get; set; } = 1;
+        public int logistics_type { get; set; } = 2;
+        public List<ShipList> shipping_list { get; set; } = new List<ShipList>();
+        public string upload_time { get; set; } = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.120+08:00");
+        public Payer payer { get; set; }
+
+    }
+
+    public class ShipOrderKey
+    {
+        public int order_number_type { get; set; } = 2;
+        public string transaction_id { get; set; }
+    }
+
+    public class ShipList
+    {
+        public string item_desc { get; set; }
+    }
+
+    public class Payer
+    {
+        public string openid { get; set; }
+    }
 }

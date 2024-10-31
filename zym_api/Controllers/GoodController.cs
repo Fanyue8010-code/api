@@ -662,7 +662,7 @@ namespace zym_api.Controllers
                 foreach (var obj in arrOrder)
                 {
                     string strOrder = obj.ToString();
-                    GoodBLL.GetOrderStatus(strOrder);
+                    GoodBLL.Shipping(strOrder);
                 }
 
                 //strJson = JsonConvert.SerializeObject(jsonObj);
