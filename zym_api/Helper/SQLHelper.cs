@@ -154,20 +154,20 @@ namespace zym_api.Helper
             return dt;
         }
         public static int ExecuteNonQueryUrl(string query, string openId, byte[] image)
-{
-    using (SqlConnection conn = new SqlConnection(strconn))
-    {
-        using (SqlCommand cmd = new SqlCommand(query, conn))
         {
-            // 添加参数
-            cmd.Parameters.AddWithValue("@OpenId", openId);
-            cmd.Parameters.AddWithValue("@Image", image);
+            using (SqlConnection conn = new SqlConnection(strconn))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    // 添加参数
+                    cmd.Parameters.AddWithValue("@OpenId", openId);
+                    cmd.Parameters.AddWithValue("@Image", image);
             
-            // 打开连接，执行查询并返回受影响的行数
-            conn.Open();
-            return cmd.ExecuteNonQuery();
+                    // 打开连接，执行查询并返回受影响的行数
+                    conn.Open();
+                    return cmd.ExecuteNonQuery();
+                }
+            }
         }
-    }
-}
     }
 }

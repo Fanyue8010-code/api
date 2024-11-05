@@ -628,7 +628,7 @@ namespace zym_api.DAL
             strBuilder.Append("WHERE 1 = 1  ");
             if(!string.IsNullOrEmpty(Start) && !string.IsNullOrEmpty(End))
             {
-                strBuilder.Append("AND CreateTime BETWEEN '"+ Start + "' AND '"+ End + " 23:59:59' ");
+                strBuilder.Append("AND PayTime BETWEEN '"+ Start + "' AND '"+ End + " 23:59:59' ");
             }
             if (!string.IsNullOrEmpty(Status))
             {
@@ -681,7 +681,7 @@ namespace zym_api.DAL
         public static string ChgShipStatus(string transId, string status)
         {
             strBuilder = new StringBuilder();
-            strBuilder.Append("UPDATE [Order] SET Status = '"+status+ "', ShippingTime = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"' ");
+            strBuilder.Append("UPDATE [Order] SET Status = '"+status+ "', ShipDate = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"' ");
             strBuilder.Append("WHERE Transaction_id = '" + transId + "' ");
             strBuilder.Append("AND STATUS = '待发货' ");
             return strBuilder.ToString();
